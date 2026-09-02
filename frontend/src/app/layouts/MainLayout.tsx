@@ -1,40 +1,27 @@
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import { Header } from '../../shared/components/layout/Header';
+import { Container } from '../../shared/components/layout/Container';
 
 export const MainLayout: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100">
-      {/* Top Header Placeholder */}
-      <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center space-x-2 font-bold text-xl text-indigo-400">
-            <span>FinEmi</span>
-            <span className="text-xs bg-indigo-950 border border-indigo-700 text-indigo-300 px-2 py-0.5 rounded-full">
-              Marketplace
-            </span>
-          </Link>
-          <nav className="flex space-x-6 text-sm font-medium text-slate-300">
-            <Link to="/" className="hover:text-indigo-400 transition-colors">
-              Home
-            </Link>
-            <Link to="/products" className="hover:text-indigo-400 transition-colors">
-              Catalog
-            </Link>
-            <Link to="/admin" className="hover:text-indigo-400 transition-colors">
-              Admin Console
-            </Link>
-          </nav>
-        </div>
-      </header>
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
+      <Header />
 
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1">
         <Outlet />
       </main>
 
-      {/* Footer Placeholder */}
-      <footer className="border-t border-slate-800 bg-slate-900 py-6 text-center text-xs text-slate-500">
-        <p>FinEmi Marketplace Foundation Phase — Active Engineering Demo</p>
+      <footer className="bg-white border-t border-slate-200/80 py-8 mt-12">
+        <Container size="lg">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+            <div>
+              <p className="font-semibold text-slate-700">FinEmi Marketplace</p>
+              <p className="mt-0.5">Authoritative Server-Side EMI Financing Platform</p>
+            </div>
+            <p>© 2026 FinEmi Marketplace. 1Fi SDE1 Assignment.</p>
+          </div>
+        </Container>
       </footer>
     </div>
   );
