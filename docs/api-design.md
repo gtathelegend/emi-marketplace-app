@@ -16,13 +16,7 @@ All API responses follow a uniform JSON structure:
   "data": [ ... ],
   "meta": {
     "requestId": "req_c7b89d123e4a",
-    "timestamp": "2026-09-02T22:30:00.000Z",
-    "pagination": {
-      "page": 1,
-      "limit": 12,
-      "total": 4,
-      "totalPages": 1
-    }
+    "timestamp": "2026-09-02T22:30:00.000Z"
   }
 }
 ```
@@ -32,8 +26,8 @@ All API responses follow a uniform JSON structure:
 {
   "success": false,
   "error": {
-    "code": "PRODUCT_NOT_FOUND",
-    "message": "Product with slug 'non-existent-slug' not found",
+    "code": "INVALID_EMI_PLAN",
+    "message": "Selected EMI plan does not belong to the requested product variant",
     "details": []
   },
   "meta": {
@@ -45,159 +39,116 @@ All API responses follow a uniform JSON structure:
 
 ---
 
-## 2. Implemented Public Catalog API Endpoints (Phase 3)
+## 2. Implemented Public API Endpoints (Phases 3 & 4)
 
 ### 2.1 Get Products Catalog List
 - **HTTP Method**: `GET`
 - **Path**: `/api/v1/products`
 - **Purpose**: Retrieves paginated list of public, published products with default variant pricing & primary thumbnail.
-- **Query Parameters**:
-  - `page` (optional, int, default `1`, min `1`): Page number.
-  - `limit` (optional, int, default `12`, min `1`, max `50`): Results per page.
-  - `search` (optional, string, max length 100): Case-insensitive search across title, subtitle, description, and brand name.
-  - `brand` (optional, string): Filter by brand slug or name.
-  - `category` (optional, string): Filter by category slug or name.
-  - `sort` (optional, enum, default `newest`): Allow-listed sorting choices (`newest`, `price_asc`, `price_desc`, `name_asc`, `name_desc`).
-- **Response `200 OK`**:
-```json
-{
-  "success": true,
-  "data": [
-    {
-      "id": "c1f7b89d-...",
-      "title": "Apple iPhone 15 Pro",
-      "slug": "apple-iphone-15-pro",
-      "subtitle": "Forged in titanium. Powered by A17 Pro.",
-      "description": "iPhone 15 Pro features a Grade 5 titanium design...",
-      "basePrice": 134900.00,
-      "rating": 4.8,
-      "reviewCount": 142,
-      "createdAt": "2026-09-02T22:30:00.000Z",
-      "brand": {
-        "id": "b1...",
-        "name": "Apple",
-        "slug": "apple",
-        "logoUrl": "..."
-      },
-      "category": {
-        "id": "c1...",
-        "name": "Smartphones",
-        "slug": "smartphones"
-      },
-      "primaryImage": "https://images.unsplash.com/...",
-      "defaultVariant": {
-        "id": "v1...",
-        "sku": "IP15P-128-NAT",
-        "title": "iPhone 15 Pro (Natural Titanium, 128GB)",
-        "colorName": "Natural Titanium",
-        "colorHex": "#888783",
-        "storage": "128GB",
-        "price": 134900.00,
-        "mrp": 144900.00,
-        "stockQuantity": 15
-      }
-    }
-  ],
-  "meta": {
-    "requestId": "req_xyz123",
-    "timestamp": "2026-09-02T22:30:00.000Z",
-    "pagination": {
-      "page": 1,
-      "limit": 12,
-      "total": 4,
-      "totalPages": 1
-    }
-  }
-}
-```
 
 ---
 
 ### 2.2 Get Product Details by Slug
 - **HTTP Method**: `GET`
 - **Path**: `/api/v1/products/:slug`
-- **Purpose**: Retrieves complete product detail for the Product Detail Page (PDP), including all active variants, gallery images, specifications, EMI plans, and partner EMI providers.
-- **Path Parameters**:
-  - `slug` (required, string): Lowercase hyphenated product slug (e.g. `apple-iphone-15-pro`).
+- **Purpose**: Retrieves complete product detail for the Product Detail Page (PDP), including active variants, gallery images, specifications, EMI plans, and partner EMI providers.
+
+---
+
+### 2.3 Submit EMI Application (Phase 4)
+- **HTTP Method**: `POST`
+- **Path**: `/api/v1/applications`
+- **Purpose**: Submits a customer EMI financing application. The server independently calculates reducing-balance/zero-cost EMI terms, verifies relationship constraints, and transactionally persists an immutable commercial contract snapshot.
+- **Request Body**:
+```json
+{
+  "variantId": "v1_iphone",
+  "emiPlanId": "plan_hdfc_6m",
+  "customer": {
+    "fullName": "Rahul Verma",
+    "email": "rahul.verma@example.com",
+    "phone": "9876543210"
+  }
+}
+```
+- **Response `201 Created`**:
+```json
+{
+  "success": true,
+  "data": {
+    "id": "app_c7b89d123e4a",
+    "applicationNumber": "1FI-2026-984321",
+    "status": "PENDING",
+    "appliedAt": "2026-09-02T22:30:00.000Z",
+    "customer": {
+      "fullName": "Rahul Verma",
+      "email": "rahul.verma@example.com",
+      "phone": "9876543210"
+    },
+    "contractSnapshot": {
+      "productName": "Apple iPhone 15 Pro",
+      "variantName": "iPhone 15 Pro (Natural Titanium, 128GB)",
+      "providerName": "HDFC Bank",
+      "sku": "IP15P-128-NAT",
+      "principalAmount": 131900.00,
+      "interestRate": 0.00,
+      "tenureMonths": 6,
+      "monthlyAmount": 21983.33,
+      "cashbackAmount": 3000.00,
+      "totalPayable": 132098.98
+    }
+  },
+  "meta": {
+    "requestId": "req_xyz987",
+    "timestamp": "2026-09-02T22:30:00.000Z"
+  }
+}
+```
+
+---
+
+### 2.4 Get Application Snapshot by Reference (Phase 4)
+- **HTTP Method**: `GET`
+- **Path**: `/api/v1/applications/:applicationNumber`
+- **Purpose**: Retrieves stored historical snapshot for customer status tracking.
 - **Response `200 OK`**:
 ```json
 {
   "success": true,
   "data": {
-    "id": "c1f7b89d-...",
-    "title": "Apple iPhone 15 Pro",
-    "slug": "apple-iphone-15-pro",
-    "subtitle": "Forged in titanium. Powered by A17 Pro.",
-    "description": "iPhone 15 Pro features a Grade 5 titanium design...",
-    "basePrice": 134900.00,
-    "rating": 4.8,
-    "reviewCount": 142,
-    "createdAt": "2026-09-02T22:30:00.000Z",
-    "updatedAt": "2026-09-02T22:30:00.000Z",
-    "brand": {
-      "id": "b1...",
-      "name": "Apple",
-      "slug": "apple",
-      "logoUrl": "..."
+    "id": "app_c7b89d123e4a",
+    "applicationNumber": "1FI-2026-984321",
+    "status": "PENDING",
+    "appliedAt": "2026-09-02T22:30:00.000Z",
+    "customer": {
+      "fullName": "Rahul Verma",
+      "email": "rahul.verma@example.com",
+      "phone": "9876543210"
     },
-    "category": {
-      "id": "c1...",
-      "name": "Smartphones",
-      "slug": "smartphones",
-      "description": "Flagship mobile devices..."
+    "contractSnapshot": {
+      "productName": "Apple iPhone 15 Pro",
+      "variantName": "iPhone 15 Pro (Natural Titanium, 128GB)",
+      "providerName": "HDFC Bank",
+      "sku": "IP15P-128-NAT",
+      "principalAmount": 131900.00,
+      "interestRate": 0.00,
+      "tenureMonths": 6,
+      "monthlyAmount": 21983.33,
+      "cashbackAmount": 3000.00,
+      "totalPayable": 132098.98
     },
-    "variants": [
-      {
-        "id": "v1...",
-        "sku": "IP15P-128-NAT",
-        "title": "iPhone 15 Pro (Natural Titanium, 128GB)",
-        "colorName": "Natural Titanium",
-        "colorHex": "#888783",
-        "storage": "128GB",
-        "price": 134900.00,
-        "mrp": 144900.00,
-        "stockQuantity": 15,
-        "isDefault": true,
-        "images": [
-          {
-            "id": "img1...",
-            "url": "https://images.unsplash.com/...",
-            "altText": "Front View",
-            "displayOrder": 1,
-            "isPrimary": true
-          }
-        ],
-        "specifications": [
-          {
-            "id": "spec1...",
-            "groupName": "Display",
-            "key": "Screen Size",
-            "value": "6.1 inches Super Retina XDR OLED",
-            "displayOrder": 1
-          }
-        ],
-        "emiPlans": [
-          {
-            "id": "plan1...",
-            "tenureMonths": 6,
-            "interestRate": 0.00,
-            "processingFee": 199.00,
-            "cashbackAmount": 3000.00,
-            "minDownPayment": 0.00,
-            "isZeroCost": true,
-            "provider": {
-              "id": "prov1...",
-              "name": "HDFC Bank",
-              "code": "HDFC_BANK",
-              "logoUrl": "https://assets.1fi.in/banks/hdfc.svg"
-            }
-          }
-        ]
-      }
-    ]
+    "productReference": {
+      "title": "Apple iPhone 15 Pro",
+      "slug": "apple-iphone-15-pro"
+    },
+    "providerReference": {
+      "name": "HDFC Bank",
+      "code": "HDFC_BANK",
+      "logoUrl": "https://assets.1fi.in/banks/hdfc.svg"
+    }
   },
   "meta": {
-    "requestId": "req_xyz456",
+    "requestId": "req_xyz654",
     "timestamp": "2026-09-02T22:30:00.000Z"
   }
 }
@@ -209,8 +160,10 @@ All API responses follow a uniform JSON structure:
 
 | HTTP Status | Error Code | Trigger Condition |
 |---|---|---|
-| 400 Bad Request | `VALIDATION_ERROR` | Malformed page, limit > 50, invalid sort option, or invalid slug syntax |
+| 400 Bad Request | `VALIDATION_ERROR` | Malformed page, limit > 50, invalid sort option, or invalid customer phone/email |
+| 400 Bad Request | `INVALID_EMI_PLAN` | EMI plan does not belong to selected variant, or plan/provider is inactive |
 | 404 Not Found | `PRODUCT_NOT_FOUND` | Product slug does not exist or product is unpublished |
-| 404 Not Found | `ROUTE_NOT_FOUND` | Accessing undefined API endpoint |
+| 404 Not Found | `VARIANT_UNAVAILABLE` | Product variant does not exist or is inactive |
+| 404 Not Found | `APPLICATION_NOT_FOUND` | Application reference number does not exist |
 | 429 Too Many Requests | `RATE_LIMIT_EXCEEDED` | Request limit exceeded (100 req/15 mins per IP) |
 | 500 Internal Server Error | `INTERNAL_SERVER_ERROR` | Unhandled error |

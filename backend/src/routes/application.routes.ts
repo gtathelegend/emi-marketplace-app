@@ -1,8 +1,14 @@
 import { Router } from 'express';
+import { createApplication, getApplicationByNumber } from '../controllers/application.controller.js';
+import { validateRequest } from '../middlewares/validate.middleware.js';
+import { createApplicationSchema, getApplicationByNumberSchema } from '../schemas/application.schema.js';
 
 const router = Router();
 
-// Placeholder for application routes: POST /api/v1/emi-applications & GET /api/v1/emi-applications/:id
-// Actual domain implementation will be added in Phase 4
+// POST /api/v1/applications - Submit new EMI loan application
+router.post('/', validateRequest(createApplicationSchema), createApplication);
+
+// GET /api/v1/applications/:applicationNumber - Retrieve application snapshot by reference
+router.get('/:applicationNumber', validateRequest(getApplicationByNumberSchema), getApplicationByNumber);
 
 export default router;
