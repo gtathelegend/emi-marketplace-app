@@ -4,20 +4,16 @@ import { MainLayout } from '../layouts/MainLayout.js';
 import { CatalogPage } from '../../features/catalog/CatalogPage.js';
 import { ProductDetailPage } from '../../features/product/ProductDetailPage.js';
 import { ApplicationTrackingPage } from '../../features/application/ApplicationTrackingPage.js';
-
-const AdminDashboardPlaceholder = () => (
-  <div className="p-8 max-w-4xl mx-auto space-y-4">
-    <h1 className="text-2xl font-bold text-slate-900">Admin Management Portal</h1>
-    <p className="text-slate-500">Route: /admin (Phase 7 implementation)</p>
-  </div>
-);
-
-const AdminLoginPlaceholder = () => (
-  <div className="p-8 max-w-4xl mx-auto space-y-4">
-    <h1 className="text-2xl font-bold text-slate-900">Admin Authentication</h1>
-    <p className="text-slate-500">Route: /admin/login (Phase 7 implementation)</p>
-  </div>
-);
+import { AdminAuthProvider } from '../../features/admin/auth/AdminAuthContext.js';
+import { ProtectedAdminRoute } from '../../features/admin/components/ProtectedAdminRoute.js';
+import { AdminLayout } from '../../features/admin/components/AdminLayout.js';
+import { AdminLoginPage } from '../../features/admin/pages/AdminLoginPage.js';
+import { AdminDashboardPage } from '../../features/admin/pages/AdminDashboardPage.js';
+import { AdminProductsPage } from '../../features/admin/pages/AdminProductsPage.js';
+import { AdminProductEditorPage } from '../../features/admin/pages/AdminProductEditorPage.js';
+import { AdminEmiPage } from '../../features/admin/pages/AdminEmiPage.js';
+import { AdminApplicationsPage } from '../../features/admin/pages/AdminApplicationsPage.js';
+import { AdminAuditLogsPage } from '../../features/admin/pages/AdminAuditLogsPage.js';
 
 const router = createBrowserRouter([
   {
@@ -28,12 +24,36 @@ const router = createBrowserRouter([
       { path: 'products', element: <CatalogPage /> },
       { path: 'products/:slug', element: <ProductDetailPage /> },
       { path: 'applications/:applicationNumber', element: <ApplicationTrackingPage /> },
-      { path: 'admin', element: <AdminDashboardPlaceholder /> },
-      { path: 'admin/login', element: <AdminLoginPlaceholder /> },
+    ],
+  },
+  {
+    path: '/admin/login',
+    element: <AdminLoginPage />,
+  },
+  {
+    path: '/admin',
+    element: <ProtectedAdminRoute />,
+    children: [
+      {
+        element: <AdminLayout />,
+        children: [
+          { index: true, element: <AdminDashboardPage /> },
+          { path: 'products', element: <AdminProductsPage /> },
+          { path: 'products/new', element: <AdminProductEditorPage /> },
+          { path: 'products/:id/edit', element: <AdminProductEditorPage /> },
+          { path: 'emi', element: <AdminEmiPage /> },
+          { path: 'applications', element: <AdminApplicationsPage /> },
+          { path: 'audit-logs', element: <AdminAuditLogsPage /> },
+        ],
+      },
     ],
   },
 ]);
 
 export const AppRouter: React.FC = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <AdminAuthProvider>
+      <RouterProvider router={router} />
+    </AdminAuthProvider>
+  );
 };

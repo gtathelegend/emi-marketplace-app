@@ -122,4 +122,30 @@ export const apiClient = {
 
     return (body as ApiEnvelope<T>).data;
   },
+
+  async patch<T>(endpoint: string, payload?: unknown, headers: Record<string, string> = {}): Promise<T> {
+    const url = `${getBaseUrl()}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
+      body: payload ? JSON.stringify(payload) : undefined,
+    });
+
+    const body = await response.json();
+
+    if (!response.ok || !body.success) {
+      const errBody = body as ApiErrorEnvelope;
+      throw new ApiError(
+        errBody.error?.message || 'API request failed',
+        errBody.error?.code || 'UNKNOWN_ERROR',
+        response.status,
+        errBody.error?.details
+      );
+    }
+
+    return (body as ApiEnvelope<T>).data;
+  },
 };

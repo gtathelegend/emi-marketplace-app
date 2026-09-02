@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import { env } from './config/env.js';
 import { requestLogger } from './middlewares/requestLogger.middleware.js';
 import { globalRateLimiter } from './middlewares/rateLimiter.middleware.js';
@@ -22,9 +23,10 @@ export const createApp = (): Express => {
     })
   );
 
-  // Request body parsing & size limits
+  // Request body parsing, cookies & size limits
   app.use(express.json({ limit: '1mb' }));
   app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+  app.use(cookieParser());
 
   // Correlation ID & Request logging
   app.use(requestLogger);

@@ -31,8 +31,20 @@ export class UnauthorizedError extends AppError {
   }
 }
 
+export class AuthenticationError extends AppError {
+  constructor(message = 'Authentication required', code = 'AUTHENTICATION_ERROR') {
+    super(message, 401, code);
+  }
+}
+
 export class ForbiddenError extends AppError {
   constructor(message = 'Access forbidden', code = 'FORBIDDEN') {
+    super(message, 403, code);
+  }
+}
+
+export class AuthorizationError extends AppError {
+  constructor(message = 'Authorization required', code = 'FORBIDDEN') {
     super(message, 403, code);
   }
 }

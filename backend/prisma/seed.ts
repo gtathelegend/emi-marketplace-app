@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
@@ -101,7 +102,6 @@ async function main() {
     },
   });
 
-  // Helper to upsert a product with variants, images, specs, and EMI plans
   // Product 1: iPhone 15 Pro
   const iphone15Pro = await prisma.product.upsert({
     where: { slug: 'apple-iphone-15-pro' },
@@ -372,9 +372,8 @@ async function main() {
     });
   }
 
-  // Seed EMI Plans for variants (3–6 plans per variant)
+  // Seed EMI Plans for variants
   const variants = [vIphoneNat128, vIphoneBlu256, vS24Gray256, vS24Black512, vMacMid256, vMacStl512, vSonySilver, vSonyBlack];
-  const providers = [hdfc, icici, onefi];
 
   for (const variant of variants) {
     const plansToCreate = [
@@ -418,14 +417,15 @@ async function main() {
 
   // Seed Admin User
   // Password hash for 'Admin@12345'
-  const defaultAdminPasswordHash = '$2a$12$R.9t9X4nS8W2j8y2r.y5p.eK5v9c1zX4k7W0f1v2u3t4r5s6q7w8e';
+  const salt = bcrypt.genSaltSync(10);
+  const passwordHash = bcrypt.hashSync('Admin@12345', salt);
   
   await prisma.adminUser.upsert({
     where: { email: 'admin@1fi.in' },
-    update: {},
+    update: { passwordHash },
     create: {
       email: 'admin@1fi.in',
-      passwordHash: defaultAdminPasswordHash,
+      passwordHash,
       fullName: 'FinEmi Master Admin',
       role: 'SUPER_ADMIN',
       isActive: true,
