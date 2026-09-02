@@ -1,5 +1,4 @@
-// Prisma schema foundation for FinEmi Marketplace
-// Note: Final domain tables (Product, ProductVariant, EMIPlan, EMIApplication, etc.) will be implemented in Phase 2
+// Prisma schema for FinEmi Marketplace
 
 generator client {
   provider = "prisma-client-js"
@@ -10,7 +9,217 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model HealthCheck {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
+enum ApplicationStatus {
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum AdminRole {
+  ADMIN
+  SUPER_ADMIN
+}
+
+model Brand {
+  id        String    @id @default(uuid())
+  name      String    @unique @db.VarChar(100)
+  slug      String    @unique @db.VarChar(100)
+  logoUrl   String?   @db.Text
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
+
+  @@map("brands")
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String    @unique @db.VarChar(100)
+  slug        String    @unique @db.VarChar(100)
+  description String?   @db.Text
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id          String           @id @default(uuid())
+  brandId     String
+  categoryId  String
+  title       String           @db.VarChar(255)
+  slug        String           @unique @db.VarChar(255)
+  subtitle    String?          @db.VarChar(255)
+  description String           @db.Text
+  basePrice   Decimal          @db.Decimal(10, 2)
+  rating      Float            @default(4.5)
+  reviewCount Int              @default(0)
+  isPublished Boolean          @default(true)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  brand       Brand            @relation(fields: [brandId], references: [id], onDelete: Restrict)
+  category    Category         @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  variants    ProductVariant[]
+
+  @@index([slug], name: "idx_product_slug")
+  @@index([categoryId, brandId, isPublished], name: "idx_product_cat_brand_published")
+  @@map("products")
+}
+
+model ProductVariant {
+  id             String                 @id @default(uuid())
+  productId      String
+  sku            String                 @unique @db.VarChar(100)
+  title          String                 @db.VarChar(255)
+  colorName      String?                @db.VarChar(50)
+  colorHex       String?                @db.VarChar(10)
+  storage        String?                @db.VarChar(50)
+  price          Decimal                @db.Decimal(10, 2)
+  mrp            Decimal                @db.Decimal(10, 2)
+  stockQuantity  Int                    @default(10)
+  isDefault      Boolean                @default(false)
+  isActive       Boolean                @default(true)
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+  product        Product                @relation(fields: [productId], references: [id], onDelete: Cascade)
+  images         ProductImage[]
+  specifications ProductSpecification[]
+  emiPlans       EMIPlan[]
+  applications   EMIApplication[]
+
+  @@index([productId, isActive], name: "idx_variant_product_active")
+  @@index([sku], name: "idx_variant_sku")
+  @@map("product_variants")
+}
+
+model ProductImage {
+  id           String         @id @default(uuid())
+  variantId    String
+  url          String         @db.Text
+  altText      String?        @db.VarChar(255)
+  displayOrder Int            @default(0)
+  isPrimary    Boolean        @default(false)
+  createdAt    DateTime       @default(now())
+  variant      ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@index([variantId, displayOrder], name: "idx_image_variant_order")
+  @@map("product_images")
+}
+
+model ProductSpecification {
+  id           String         @id @default(uuid())
+  variantId    String
+  groupName    String         @default("General") @db.VarChar(100)
+  key          String         @db.VarChar(100)
+  value        String         @db.Text
+  displayOrder Int            @default(0)
+  variant      ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@unique([variantId, key], name: "uq_variant_spec_key")
+  @@index([variantId, displayOrder], name: "idx_spec_variant_order")
+  @@map("product_specifications")
+}
+
+model EMIProvider {
+  id        String    @id @default(uuid())
+  name      String    @unique @db.VarChar(100)
+  code      String    @unique @db.VarChar(50)
+  logoUrl   String?   @db.Text
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  plans     EMIPlan[]
+
+  @@index([code, isActive], name: "idx_provider_code_active")
+  @@map("emi_providers")
+}
+
+model EMIPlan {
+  id             String           @id @default(uuid())
+  variantId      String
+  providerId     String
+  tenureMonths   Int
+  interestRate   Decimal          @db.Decimal(5, 2)
+  processingFee  Decimal          @default(0.00) @db.Decimal(10, 2)
+  cashbackAmount Decimal          @default(0.00) @db.Decimal(10, 2)
+  minDownPayment Decimal          @default(0.00) @db.Decimal(10, 2)
+  isZeroCost     Boolean          @default(false)
+  isActive       Boolean          @default(true)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  variant        ProductVariant   @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  provider       EMIProvider      @relation(fields: [providerId], references: [id], onDelete: Restrict)
+  applications   EMIApplication[]
+
+  @@index([variantId, providerId, isActive], name: "idx_plan_variant_provider_active")
+  @@map("emi_plans")
+}
+
+model EMIApplication {
+  id                   String            @id @default(uuid())
+  applicationNumber    String            @unique @db.VarChar(50)
+  variantId            String
+  emiPlanId            String
+  customerName         String            @db.VarChar(150)
+  customerEmail        String            @db.VarChar(255)
+  customerPhone        String            @db.VarChar(20)
+  panNumberDemo        String            @db.VarChar(10)
+  status               ApplicationStatus @default(PENDING)
+  
+  // Authoritative historical commercial terms snapshots
+  productNameSnapshot  String            @db.VarChar(255)
+  variantSnapshot      String            @db.VarChar(255)
+  providerNameSnapshot String            @db.VarChar(100)
+  skuSnapshot          String            @db.VarChar(100)
+  principalAmount      Decimal           @db.Decimal(10, 2)
+  interestRateSnapshot Decimal           @db.Decimal(5, 2)
+  tenureMonthsSnapshot Int
+  monthlyAmountSnapshot Decimal          @db.Decimal(10, 2)
+  cashbackSnapshot     Decimal           @default(0.00) @db.Decimal(10, 2)
+  totalPayableSnapshot Decimal           @db.Decimal(10, 2)
+  
+  appliedAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+  variant              ProductVariant    @relation(fields: [variantId], references: [id], onDelete: Restrict)
+  emiPlan              EMIPlan           @relation(fields: [emiPlanId], references: [id], onDelete: Restrict)
+
+  @@index([applicationNumber], name: "idx_app_number")
+  @@index([status, appliedAt], name: "idx_app_status_date")
+  @@map("emi_applications")
+}
+
+model AdminUser {
+  id           String     @id @default(uuid())
+  email        String     @unique @db.VarChar(255)
+  passwordHash String     @db.Text
+  fullName     String     @db.VarChar(150)
+  role         AdminRole  @default(ADMIN)
+  isActive     Boolean    @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  auditLogs    AuditLog[]
+
+  @@map("admin_users")
+}
+
+model AuditLog {
+  id          String     @id @default(uuid())
+  adminUserId String?
+  action      String     @db.VarChar(100)
+  entityType  String     @db.VarChar(50)
+  entityId    String     @db.VarChar(100)
+  beforeState Json?
+  afterState  Json?
+  ipAddress   String?    @db.VarChar(45)
+  userAgent   String?    @db.Text
+  createdAt   DateTime   @default(now())
+  adminUser   AdminUser? @relation(fields: [adminUserId], references: [id], onDelete: SetNull)
+
+  @@index([adminUserId, createdAt], name: "idx_audit_admin_date")
+  @@index([entityType, entityId], name: "idx_audit_entity")
+  @@map("audit_logs")
 }
