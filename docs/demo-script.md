@@ -1,40 +1,43 @@
-# Technical Demo Video & Interview Walkthrough Script (3–5 Mins)
+# Technical Interview & Demo Script — FinEmi Marketplace
 
-## 1. Demo Objectives & Structure
-This script guides the 2–5 minute recorded video demonstration for the **1Fi SDE1 Engineering Assignment**. It highlights production software engineering principles: layered architecture, zero-trust financial logic, schema normalization, state management, and administrative auditing.
+## 1. Demo Narrative Overview
 
-| Timestamp | Phase | Key Message & Visual Highlight |
-|---|---|---|
-| **0:00 - 0:45** | **Customer Journey** | Live demo of Product Catalog, Slug routing, Variant switching, Dynamic EMI breakdown, and Application submission |
-| **0:45 - 1:30** | **Admin Portal** | Login, product/variant management, EMI plan updates, application status changes, and immutable audit logs |
-| **1:30 - 3:00** | **Backend Architecture & Security** | Layered code structure (Controller -> Service -> Repository), Zod validation, and Server-side EMI math execution |
-| **3:00 - 4:00** | **Database Schema & Testing** | PostgreSQL schema via Prisma, index design, Vitest unit & integration test execution |
-| **4:00 - 4:30** | **Deployment & Wrap Up** | Vercel frontend, Render backend, Cloud PostgreSQL live deployment review |
+This demo walkthrough demonstrates the end-to-end architecture and customer journey of **FinEmi Marketplace**.
 
 ---
 
-## 2. Minute-by-Minute Script & Narration
+## 2. Step-by-Step Demo Flow
 
-### Part 1: Customer Product Discovery & Dynamic EMI (0:00 - 0:45)
-- **Visual**: Screen opens on the 1Fi Marketplace catalog. Click on "Apple iPhone 15 Pro".
-- **Narration**: *"Welcome to 1Fi Marketplace. I'm presenting our production-grade full-stack EMI marketplace. Notice our SEO-friendly URL `/product/apple-iphone-15-pro`. As I switch between colors and storage capacities—such as 128GB to 256GB—the URL query parameter seamlessly updates while TanStack Query fetches the specific variant's pricing and available EMI plans."*
-- **Visual**: Click on the 24-Month No-Cost EMI option. The EMI Summary widget recalculates `₹5,495/mo`. Click "Proceed with EMI Plan". Fill out customer details with PAN `ABCDE1234F` and click "Submit Application".
-- **Narration**: *"When I select an EMI plan and proceed to checkout, notice that the frontend sends ONLY the variant ID and EMI plan ID. The frontend is NEVER trusted to calculate interest rates or monthly installments."*
+### Step 1: Catalog Browsing & Search
+- Open `http://localhost:5173/products`.
+- Demonstrate live catalog search (e.g. search `"iPhone"` or `"S24"`).
+- Demonstrate brand filtering (select `Apple` or `Samsung`) and category filtering.
+- Demonstrate allow-listed sorting (e.g., `Price: Low to High`).
+- Show responsive `ProductCard` items displaying primary image, selling price, MRP strike-through, and starting monthly EMI badge.
 
-### Part 2: Customer Confirmation & Admin Management (0:45 - 1:30)
-- **Visual**: Show generated application confirmation screen with tracking number `1FI-2026-XXXXXX`. Then navigate to `/admin/login`. Log in with admin credentials.
-- **Narration**: *"Here is our instantly generated application tracking screen. Now let's switch to the Admin Portal. We authenticate securely via JWT with bcrypt-hashed credentials."*
-- **Visual**: Navigate to Admin Dashboard. Show Applications queue. Update status from `PENDING` to `APPROVED`. Navigate to Audit Logs tab. Show the new audit log entry.
-- **Narration**: *"In the Admin Console, managers can inspect incoming EMI applications, update status to Approved, and configure EMI plans. Crucially, every administrative mutation triggers an immutable audit log capturing the actor, entity ID, timestamp, IP address, and before/after JSON states."*
+### Step 2: Product Detail Page & Variant Switching
+- Click on **Apple iPhone 15 Pro** (`/products/apple-iphone-15-pro`).
+- Demonstrate image gallery thumbnail switching.
+- Demonstrate variant switching: Switch between `Natural Titanium (128GB)` and `Blue Titanium (256GB)`. Point out that selecting a variant updates selling price, MRP, gallery images, specifications, and available `EmiPlanCard` financing options.
 
-### Part 3: Deep-Dive Backend Architecture & Financial Security (1:30 - 3:00)
-- **Visual**: Open IDE to `backend/src/services/application.service.ts`.
-- **Narration**: *"Let's examine the code architecture. We enforce a strict layered architecture: Routes handle HTTP definitions, Controllers manage status codes, Services enforce business logic, and Repositories wrap Prisma ORM data queries."*
-- **Visual**: Highlight `computeEMIBreakdown` function inside `emi.service.ts`.
-- **Narration**: *"Here is our core financial calculation engine. When an application is created, the backend transactionally queries the database for authoritative variant pricing and linked plan interest rates. It computes reducing-balance interest using standard financial math formulas and writes the contract snapshot to PostgreSQL."*
+### Step 3: EMI Plan Selection & Financing Summary
+- Select **HDFC Bank 6-Month Zero Cost EMI** plan.
+- Point out the instant ₹3,000 cashback badge and 0% interest rate.
+- Highlight the **Financing Breakdown** summary card displaying net principal financed, monthly installment, and processing fee.
+- Explain: *"Notice that the frontend does not calculate the EMI; it displays authoritative backend financial quotes."*
 
-### Part 4: Database Model, Testing & Deployment (3:00 - 4:30)
-- **Visual**: Show Prisma schema (`schema.prisma`) and terminal window running `npm test`.
-- **Narration**: *"Our database model is a fully normalized 3NF PostgreSQL schema with foreign key constraints and strategic B-Tree indexing on slugs, SKUs, and application tracking numbers. In our terminal, running `npm test` executes our Vitest suite, testing EMI calculation edge cases, variant mismatches, invalid PAN inputs, and unauthorized admin attempts."*
-- **Visual**: Briefly show deployed Vercel and Render dashboards.
-- **Narration**: *"Finally, the application is live: the React frontend is deployed on Vercel Edge CDN, the Express backend runs on Render, and data is persisted in cloud managed PostgreSQL. Thank you!"*
+### Step 4: Checkout & Application Submission
+- Click **Apply for EMI**.
+- Enter safe demo applicant details:
+  - Full Name: `Rahul Verma`
+  - Email: `rahul.verma@example.com`
+  - Phone: `9876543210`
+- Click **Submit Application**. Point out the loading spinner and button disable state preventing duplicate submissions.
+
+### Step 5: Application Tracking & Snapshot Immutability
+- Upon submission, the app navigates automatically to `/applications/1FI-2026-XXXX`.
+- Highlight the **Immutable Commercial Contract Snapshot**:
+  - `Application Reference`: `1FI-2026-XXXX`
+  - `Status`: `PENDING`
+  - `Principal Financed`, `Monthly Installment`, `Interest Rate`, `Cashback Amount`, `Total Payable`.
+- Explain: *"Even if the bank later changes interest rates or product catalog prices, this stored application snapshot remains completely frozen and tamper-proof."*

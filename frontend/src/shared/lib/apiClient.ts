@@ -1,9 +1,17 @@
+export interface PaginationMeta {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
 export interface ApiEnvelope<T> {
   success: boolean;
   data: T;
   meta: {
     requestId?: string;
     timestamp: string;
+    pagination?: PaginationMeta;
   };
 }
 
@@ -62,6 +70,31 @@ export const apiClient = {
     }
 
     return (body as ApiEnvelope<T>).data;
+  },
+
+  async getEnvelope<T>(endpoint: string, headers: Record<string, string> = {}): Promise<ApiEnvelope<T>> {
+    const url = `${getBaseUrl()}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
+    });
+
+    const body = await response.json();
+
+    if (!response.ok || !body.success) {
+      const errBody = body as ApiErrorEnvelope;
+      throw new ApiError(
+        errBody.error?.message || 'API request failed',
+        errBody.error?.code || 'UNKNOWN_ERROR',
+        response.status,
+        errBody.error?.details
+      );
+    }
+
+    return body as ApiEnvelope<T>;
   },
 
   async post<T>(endpoint: string, payload?: unknown, headers: Record<string, string> = {}): Promise<T> {
