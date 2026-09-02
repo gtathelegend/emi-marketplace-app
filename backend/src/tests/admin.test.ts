@@ -19,6 +19,13 @@ vi.mock('../config/prisma.js', () => {
     updatedAt: new Date('2026-09-02T22:00:00.000Z'),
   };
 
+  const mockInactiveAdminUser = {
+    ...mockAdminUser,
+    id: 'admin_inactive',
+    email: 'inactive@1fi.in',
+    isActive: false,
+  };
+
   const mockProduct = {
     id: 'prod_1',
     brandId: 'b1',
@@ -145,6 +152,9 @@ vi.mock('../config/prisma.js', () => {
         if (where?.email === 'admin@1fi.in' || where?.id === 'admin_1') {
           return mockAdminUser;
         }
+        if (where?.email === 'inactive@1fi.in' || where?.id === 'admin_inactive') {
+          return mockInactiveAdminUser;
+        }
         return null;
       }),
       update: vi.fn().mockResolvedValue(mockAdminUser),
@@ -219,11 +229,32 @@ describe('Admin Platform REST APIs (/api/v1/admin)', () => {
       expect(response.body.success).toBe(false);
       expect(response.body.error).toHaveProperty('code', 'AUTHENTICATION_ERROR');
     });
+
+    it('should return HTTP 401 for inactive admin account', async () => {
+      const response = await request(app).post('/api/v1/admin/auth/login').send({
+        email: 'inactive@1fi.in',
+        password: 'Admin@12345',
+      });
+
+      expect(response.status).toBe(401);
+      expect(response.body.success).toBe(false);
+      expect(response.body.error.message).toMatch(/deactivated/i);
+    });
   });
 
   describe('Server-Side Protected Admin Routes Security', () => {
     it('should reject unauthenticated requests to /api/v1/admin/dashboard/summary with HTTP 401', async () => {
       const response = await request(app).get('/api/v1/admin/dashboard/summary');
+
+      expect(response.status).toBe(401);
+      expect(response.body.success).toBe(false);
+      expect(response.body.error).toHaveProperty('code', 'AUTHENTICATION_ERROR');
+    });
+
+    it('should reject malformed or forged tokens with HTTP 401', async () => {
+      const response = await request(app)
+        .get('/api/v1/admin/dashboard/summary')
+        .set('Authorization', 'Bearer malformed.fake.token');
 
       expect(response.status).toBe(401);
       expect(response.body.success).toBe(false);
@@ -260,6 +291,16 @@ describe('Admin Platform REST APIs (/api/v1/admin)', () => {
 
       expect(response.status).toBe(201);
       expect(response.body.success).toBe(true);
+    });
+
+    it('should enforce pagination limit caps (max 50) on admin product listings', async () => {
+      const token = generateValidAdminToken();
+      const response = await request(app)
+        .get('/api/v1/admin/products?limit=99999')
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(200);
+      expect(response.body.meta.pagination.limit).toBe(50);
     });
 
     it('should reject invalid negative financial values in EMI plan creation with HTTP 400', async () => {

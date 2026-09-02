@@ -76,6 +76,64 @@ describe('EMICalculator Pure Financial Engine', () => {
       expect(result.monthlyInstallment.toNumber()).toBe(4658.26);
       expect(result.totalPayable.toNumber()).toBe(112297.24); // (4658.26 * 24) + 499
     });
+
+    it('should correctly calculate long tenure with high fractional interest rate', () => {
+      const result = EMICalculator.calculate({
+        variantPrice: 200000,
+        tenureMonths: 60,
+        interestRate: 18.75,
+        isZeroCost: false,
+      });
+
+      expect(result.principalAmount.toNumber()).toBe(200000);
+      expect(result.monthlyInstallment.toNumber()).toBe(5160.64);
+      expect(result.totalPayable.toNumber()).toBe(309638.40);
+    });
+  });
+
+  describe('Financial Edge Cases & Boundaries', () => {
+    it('should clamp principal to 0 when cashback equals product price', () => {
+      const result = EMICalculator.calculate({
+        variantPrice: 5000,
+        tenureMonths: 6,
+        interestRate: 12,
+        cashbackAmount: 5000,
+        processingFee: 99,
+        isZeroCost: false,
+      });
+
+      expect(result.principalAmount.toNumber()).toBe(0);
+      expect(result.monthlyInstallment.toNumber()).toBe(0);
+      expect(result.totalPayable.toNumber()).toBe(99); // Processing fee only
+    });
+
+    it('should clamp principal to 0 when cashback is greater than product price (never negative)', () => {
+      const result = EMICalculator.calculate({
+        variantPrice: 5000,
+        tenureMonths: 6,
+        interestRate: 12,
+        cashbackAmount: 8000,
+        processingFee: 150,
+        isZeroCost: false,
+      });
+
+      expect(result.principalAmount.toNumber()).toBe(0);
+      expect(result.monthlyInstallment.toNumber()).toBe(0);
+      expect(result.totalPayable.toNumber()).toBe(150);
+    });
+
+    it('should handle zero interest rate even if isZeroCost is false', () => {
+      const result = EMICalculator.calculate({
+        variantPrice: 6000,
+        tenureMonths: 6,
+        interestRate: 0,
+        isZeroCost: false,
+      });
+
+      expect(result.monthlyInstallment.toNumber()).toBe(1000);
+      expect(result.totalInterest.toNumber()).toBe(0);
+      expect(result.totalPayable.toNumber()).toBe(6000);
+    });
   });
 
   describe('Validation & Edge Cases', () => {
