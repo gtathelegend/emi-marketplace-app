@@ -1,9 +1,14 @@
 import { Router } from 'express';
+import { getProducts, getProductBySlug } from '../controllers/product.controller.js';
+import { validateRequest } from '../middlewares/validate.middleware.js';
+import { getProductsSchema, getProductBySlugSchema } from '../schemas/product.schema.js';
 
 const router = Router();
 
-// Placeholders for product routes: GET /api/v1/products and GET /api/v1/products/:slug
-// Note: Per architectural correction, route uses /products/:slug (plural)
-// Actual domain implementation will be added in Phase 3
+// GET /api/v1/products - List public products with pagination, search, filter, & sort
+router.get('/', validateRequest(getProductsSchema), getProducts);
+
+// GET /api/v1/products/:slug - Get public product details by slug with nested variants & EMI plans
+router.get('/:slug', validateRequest(getProductBySlugSchema), getProductBySlug);
 
 export default router;
