@@ -1,0 +1,16 @@
+// Prisma schema foundation for FinEmi Marketplace
+// Note: Final domain tables (Product, ProductVariant, EMIPlan, EMIApplication, etc.) will be implemented in Phase 2
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model HealthCheck {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+}
