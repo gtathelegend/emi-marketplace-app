@@ -4,6 +4,7 @@ import { MainLayout } from '../layouts/MainLayout.js';
 import { CatalogPage } from '../../features/catalog/CatalogPage.js';
 import { ProductDetailPage } from '../../features/product/ProductDetailPage.js';
 import { ApplicationTrackingPage } from '../../features/application/ApplicationTrackingPage.js';
+import { NotFoundPage } from '../../features/common/NotFoundPage.js';
 import { AdminAuthProvider } from '../../features/admin/auth/AdminAuthContext.js';
 import { ProtectedAdminRoute } from '../../features/admin/components/ProtectedAdminRoute.js';
 import { AdminLayout } from '../../features/admin/components/AdminLayout.js';
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
       { path: 'products', element: <CatalogPage /> },
       { path: 'products/:slug', element: <ProductDetailPage /> },
       { path: 'applications/:applicationNumber', element: <ApplicationTrackingPage /> },
+      { path: '*', element: <NotFoundPage /> },
     ],
   },
   {
@@ -44,6 +46,7 @@ const router = createBrowserRouter([
           { path: 'emi', element: <AdminEmiPage /> },
           { path: 'applications', element: <AdminApplicationsPage /> },
           { path: 'audit-logs', element: <AdminAuditLogsPage /> },
+          { path: '*', element: <NotFoundPage /> },
         ],
       },
     ],
