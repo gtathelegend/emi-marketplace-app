@@ -31,7 +31,7 @@ export const Header: React.FC = () => {
                 FinEmi<span className="text-brand-600 font-extrabold">.</span>
               </span>
               <span className="hidden sm:block text-[10px] uppercase font-bold tracking-widest text-ggray -mt-1">
-                Verified EMI Marketplace
+                Marketplace
               </span>
             </div>
           </Link>
@@ -43,7 +43,7 @@ export const Header: React.FC = () => {
                 type="text"
                 value={trackRef}
                 onChange={(e) => setTrackRef(e.target.value)}
-                placeholder="Track application reference (e.g. 1FI-2026-984321)..."
+                placeholder="Track application (e.g. 1FI-2026-984321)..."
                 className="w-full bg-slate-100/90 text-sm text-gdark pl-9 pr-22 py-2 rounded-xl border border-gborder focus:outline-none focus:ring-2 focus:ring-gblue-500 focus:bg-white transition-all placeholder:text-slate-400"
               />
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
@@ -66,7 +66,7 @@ export const Header: React.FC = () => {
             </Link>
             <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-3 py-1.5 rounded-xl">
               <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              <span>100% Server Verified EMI</span>
+              <span>Verified EMI Plans</span>
             </div>
           </div>
 

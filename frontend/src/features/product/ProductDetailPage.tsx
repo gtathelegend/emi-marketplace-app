@@ -41,6 +41,7 @@ export const ProductDetailPage: React.FC = () => {
   // Initialize selected variant when product loads
   useEffect(() => {
     if (product && product.variants.length > 0) {
+      document.title = `${product.title} | FinEmi Marketplace`;
       const defaultVar = product.variants.find((v) => v.isDefault) || product.variants[0];
       setSelectedVariantId(defaultVar.id);
       if (defaultVar.images.length > 0) {
@@ -297,8 +298,8 @@ export const ProductDetailPage: React.FC = () => {
                     <Check className="w-3.5 h-3.5 stroke-[3]" />
                   </div>
                   <div>
-                    <span className="font-bold block text-gdark">Authoritative Bank Offers</span>
-                    <span className="text-xs text-ggray">Direct quotes from verified lending partners</span>
+                    <span className="font-bold block text-gdark">Direct Bank Offers</span>
+                    <span className="text-xs text-ggray">Clear terms from verified lending partners</span>
                   </div>
                 </div>
 
@@ -307,7 +308,7 @@ export const ProductDetailPage: React.FC = () => {
                     <Zap className="w-3.5 h-3.5 stroke-[2.5]" />
                   </div>
                   <div>
-                    <span className="font-bold block text-gdark">Fast & Paperless Applications</span>
+                    <span className="font-bold block text-gdark">Fast Digital Applications</span>
                     <span className="text-xs text-ggray">Instant approval with digital submission</span>
                   </div>
                 </div>
@@ -341,11 +342,11 @@ export const ProductDetailPage: React.FC = () => {
             <div className="space-y-4">
               <div className="flex items-center justify-between flex-wrap gap-2">
                 <div>
-                  <h3 className="text-lg font-bold text-gdark">Available EMI Financing Plans</h3>
+                  <h3 className="text-lg font-bold text-gdark">Choose an EMI Plan</h3>
                   <p className="text-xs text-ggray">Select a plan to view complete breakdown</p>
                 </div>
                 <Badge variant="success" size="sm">
-                  Authoritative Quotes
+                  Verified Rates
                 </Badge>
               </div>
 
@@ -379,7 +380,7 @@ export const ProductDetailPage: React.FC = () => {
             {selectedEmiPlan && (
               <Card variant="elevated" className="bg-white border-2 border-gblue-600 rounded-2xl shadow-material-selected">
                 <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
-                  <h4 className="text-base font-bold text-gdark">Your Selected Financing Plan</h4>
+                  <h4 className="text-base font-bold text-gdark">Selected EMI Plan</h4>
                   <Badge variant="info">
                     {selectedEmiPlan.provider.name} • {selectedEmiPlan.tenureMonths} Months
                   </Badge>
@@ -446,7 +447,7 @@ export const ProductDetailPage: React.FC = () => {
               </div>
               <div className="flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-gblue-600 shrink-0" />
-                <span>Server Snapshot Protected</span>
+                <span>Secure Application</span>
               </div>
             </div>
           </div>

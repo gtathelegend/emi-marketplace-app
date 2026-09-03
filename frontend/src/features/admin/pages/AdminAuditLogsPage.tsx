@@ -50,7 +50,7 @@ export const AdminAuditLogsPage: React.FC = () => {
           <History className="w-6 h-6 text-emerald-400" />
           <span>Administrative Audit Logs</span>
         </h1>
-        <p className="text-xs text-slate-400">Read-only immutable record of all administrative system mutations</p>
+        <p className="text-xs text-slate-400">Record of administrative changes and updates</p>
       </div>
 
       {/* Audit Log Table */}

@@ -1,147 +1,208 @@
-# FinEmi Marketplace — Full-Stack EMI Application
+# FinEmi Marketplace
 
-[![Status](https://img.shields.io/badge/Status-Phases%200--9%20Complete-emerald)](file:///d:/Vedaang/Internship/F/emi-marketplace-app/requirements.md)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue)](https://www.typescriptlang.org/)
-[![Express](https://img.shields.io/badge/Express-4.19-lightgrey)](https://expressjs.com/)
-[![React](https://img.shields.io/badge/React-18.3-cyan)](https://react.dev/)
-[![Prisma](https://img.shields.io/badge/Prisma-5.19-indigo)](https://www.prisma.io/)
+A full-stack marketplace application where users can browse products, compare variants, view flexible EMI financing plans, and submit financing applications.
 
-> **Notice**: Production-grade full-stack marketplace implementation completed for the **1Fi SDE1 Engineering Assignment**. All 10 execution phases (Phases 0–9) are complete, hardened, and verified with 42 passing backend Vitest tests and 3 passing frontend Vitest tests.
+## Live Demo
 
----
-
-## 1. Project Overview
-
-**FinEmi Marketplace** is a production-grade full-stack EMI e-commerce application. It allows customers to browse electronic products, select specific variants (color, storage), explore dynamic EMI financing options, submit loan applications with server-side financial calculations, and track loan status. Additionally, an administrative console provides catalog management, EMI plan configuration, loan application processing, and immutable audit logs.
-
-### Key Architectural Highlights
-- **Layered Backend Architecture**: `Routes -> Middleware -> Controllers -> Services -> Repositories -> Prisma ORM -> PostgreSQL`.
-- **Zero-Trust Financial Calculations**: The client submits *only* identifiers (`variantId`, `emiPlanId`). The backend re-fetches authoritative pricing & interest rates and calculates monthly installments server-side inside a database transaction using `Prisma.Decimal`.
-- **Immutable Application Snapshots**: When a loan application is submitted, a commercial snapshot is permanently frozen in the database (`productNameSnapshot`, `monthlyAmountSnapshot`, `interestRateSnapshot`, `totalPayableSnapshot`), protecting contract integrity against subsequent catalog edits.
-- **Server-Side Admin Security**: HTTP-only JWT cookies (`admin_token`), `bcryptjs` password hashing, `requireAdmin` authorization middleware, and transactional audit logging (`AuditLog`).
-- **Architectural Decision Records (ADRs)**: Documented decisions under `docs/decisions/`.
+- **Frontend**: [https://emi-marketplace-app.vercel.app/](https://emi-marketplace-app.vercel.app/)
+- **Backend API**: [https://emi-marketplace-app.onrender.com/](https://emi-marketplace-app.onrender.com/)
+- **Health Check**: [https://emi-marketplace-app.onrender.com/api/v1/health](https://emi-marketplace-app.onrender.com/api/v1/health)
 
 ---
 
-## 2. Tech Stack
+## Features
 
-| Layer | Technologies |
-|---|---|
-| **Frontend** | React 18, TypeScript, Vite, Tailwind CSS, React Router v6, TanStack Query (React Query v5), Lucide Icons |
-| **Backend** | Node.js (v20+), Express, TypeScript, Prisma ORM, PostgreSQL, Zod, Helmet, CORS, Rate Limiter, Winston Logger |
-| **Testing** | Vitest, Supertest |
-| **Infrastructure** | Vercel Edge (Frontend), Render (Backend Web Service), Managed Cloud PostgreSQL (Neon/Supabase) |
-
----
-
-## 3. Core Features
-
-### Customer Experience
-- `/products`: Catalog listing with search, brand/category filtering, allow-listed sorting, and backend pagination.
-- `/products/:slug`: Product detail page (PDP) with image gallery switcher, dynamic variant selection (color swatches, storage pills), bank EMI cards, and financing summary box.
-- `ApplicationModal`: Checkout dialog with inline Zod validation and mutation.
-- `/applications/:applicationNumber`: Immutable snapshot contract tracking view.
-
-### Admin Platform
-- `/admin/login`: Secure admin login (`admin@1fi.in` / `Admin@12345`).
-- `/admin`: Overview dashboard with live database metrics and activity stream.
-- `/admin/products`: Inventory catalog table, search, and publish/unpublish toggle.
-- `/admin/products/new` & `/admin/products/:id/edit`: Product & variant editor.
-- `/admin/emi`: Bank partner and EMI plan CRUD management.
-- `/admin/applications`: Customer application approval/rejection processor.
-- `/admin/audit-logs`: Immutable administrative audit trail inspector.
+- **Product Catalog**: Search, filter by brand/category, sort by price/recency, and browse paginated inventory.
+- **Product Variants**: Switch color swatches, storage capacities, and dynamic image galleries.
+- **EMI Comparison**: Compare bank partners, interest rates (standard & zero-cost), processing fees, and cashback offers.
+- **Server-Side Calculations**: Reliable financial installments computed directly on the backend.
+- **Financing Application Flow**: Apply for financing plans with form validation and instant tracking references.
+- **Application Tracking**: View submitted financing application details with persistent contract snapshots.
+- **Admin Dashboard**: Overview metrics for products, variants, active EMI plans, and pending applications.
+- **Admin Management**: Manage products, variants, bank providers, EMI plans, and application statuses.
+- **Audit Logging**: Immutable logging for administrative changes and operations.
 
 ---
 
-## 4. Implementation Status
+## Tech Stack
 
-- [x] **Phase 0 — Architecture ✅**: Requirements matrix, ERD, API specs, Security policies, UX system, Test plan, Demo script, 6 ADRs.
-- [x] **Phase 1 — Foundation ✅**: TypeScript config, Express app bootstrap, Helmet, CORS, Zod env validation, Winston request logger, Rate limiting, Centralized error handling, API response envelope, TanStack Query provider, React Router placeholders, Vitest API integration tests.
-- [x] **Phase 2 — Domain + Database ✅**: Production 3NF PostgreSQL domain schema (`schema.prisma`), Decimal precision, snapshot terms, deletion restrictions (`ON DELETE RESTRICT`), strategic B-Tree indexing, idempotent seed script.
-- [x] **Phase 3 — Backend Core ✅**: ProductRepository, ProductService, ProductController, Zod product schemas, REST endpoints `GET /api/v1/products` and `GET /api/v1/products/:slug`.
-- [x] **Phase 4 — Financial / EMI Engine ✅**: Pure `EMICalculator` using `Prisma.Decimal`, reducing-balance and zero-cost formulas, server-authoritative application service, `POST /api/v1/applications` & `GET /api/v1/applications/:applicationNumber`.
-- [x] **Phase 5 — Frontend Design System ✅**: Extended Tailwind theme, global CSS focus rings, layout primitives, UI primitives, commerce primitives, header/footer shell.
-- [x] **Phase 6 — Customer Experience ✅**: `/products` catalog, `/products/:slug` PDP, application modal, `/applications/:applicationNumber` tracking page.
-- [x] **Phase 7 — Admin Platform ✅**: Admin Auth (`POST /admin/auth/login`, `GET /admin/auth/me`), `requireAdmin` middleware, product/variant/EMI CRUD, status processor, transactional audit logging, Admin UI.
-- [x] **Phase 8 — Testing & Hardening ✅**: 42 backend Vitest integration tests, 3 frontend Vitest tests, financial edge cases, tampering rejection, snapshot immutability, pagination limits, Prisma error mapping.
-- [x] **Phase 9 — Production Polish ✅**: 404 fallback page, modal accessibility focus trapping, date/currency formatting, `.env.example` documentation, security review, portfolio-ready README and docs.
-- [ ] **Phase 10 — Deployment + Submission**: Final deployment and demo recording.
+### Frontend
+- **Framework**: React 18 with TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **State & Data Fetching**: TanStack Query (React Query v5)
+- **Routing**: React Router v6
+- **Icons**: Lucide React
+
+### Backend
+- **Runtime**: Node.js (v20+) with TypeScript
+- **Web Framework**: Express
+- **Database ORM**: Prisma ORM
+- **Validation**: Zod
+- **Security & Auth**: JWT authentication, bcryptjs, Helmet, CORS, Rate Limiting
+
+### Database & Deployment
+- **Database**: PostgreSQL (Neon)
+- **Frontend Hosting**: Vercel
+- **Backend Hosting**: Render
 
 ---
 
-## 5. Prerequisites & Local Setup
+## Project Structure
 
-### Prerequisites
-- Node.js `v20.x` or higher
-- npm `v10.x` or higher
-- PostgreSQL `v15+`
-
-### Environment Setup
-Copy template environment files:
-```bash
-cp backend/.env.example backend/.env
-cp frontend/.env.example frontend/.env
+```
+emi-marketplace-app/
+├── backend/
+│   ├── prisma/
+│   │   ├── schema.prisma       # Database schema definition
+│   │   └── seed.ts             # Initial catalog and admin seed script
+│   ├── src/
+│   │   ├── config/             # Environment validation & app constants
+│   │   ├── controllers/        # Request/response handlers
+│   │   ├── errors/             # Custom application error classes
+│   │   ├── middleware/         # Auth, validation, logging & rate-limiters
+│   │   ├── repositories/       # Prisma data-access abstractions
+│   │   ├── routes/             # Express API v1 route definitions
+│   │   ├── services/           # Domain business logic & EMI calculations
+│   │   ├── tests/              # Vitest API integration test suite
+│   │   ├── app.ts              # Express application factory
+│   │   └── server.ts           # Server entry point
+│   └── package.json
+│
+├── frontend/
+│   ├── public/                 # Static assets and brand logos
+│   ├── src/
+│   │   ├── app/                # Root providers, layouts & router
+│   │   ├── features/
+│   │   │   ├── admin/          # Admin portal, dashboard & management
+│   │   │   ├── application/    # Application tracking page
+│   │   │   ├── catalog/        # Marketplace catalog & filters
+│   │   │   └── product/        # Product detail, variants & EMI selection
+│   │   └── shared/             # Reusable UI components, hooks & API client
+│   └── package.json
+│
+└── docs/                       # Technical architecture & design documentation
 ```
 
-Default Environment Variables (`backend/.env`):
+---
+
+## REST API Reference
+
+All API routes are mounted under `/api/v1`:
+
+### Public Endpoints
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/v1/health` | Service health check |
+| `GET` | `/api/v1/products` | List published products with search, filters & pagination |
+| `GET` | `/api/v1/products/:slug` | Get detailed product information by slug with variants & EMI plans |
+| `POST` | `/api/v1/applications` | Submit a financing application |
+| `GET` | `/api/v1/applications/:applicationNumber` | Track an application by reference number |
+
+### Admin Endpoints (Protected)
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/v1/admin/auth/login` | Authenticate admin user & receive JWT token |
+| `GET` | `/api/v1/admin/auth/me` | Fetch active admin user profile |
+| `POST` | `/api/v1/admin/auth/logout` | Clear admin session |
+| `GET` | `/api/v1/admin/dashboard/summary` | Fetch dashboard counts and recent activity |
+| `GET` | `/api/v1/admin/products` | List all products (published and drafts) |
+| `POST` | `/api/v1/admin/products` | Create a new product |
+| `PATCH` | `/api/v1/admin/products/:id` | Update product details or toggle publish status |
+| `POST` | `/api/v1/admin/variants` | Add a new variant to a product |
+| `GET` | `/api/v1/admin/emi/providers` | List bank financing partners |
+| `POST` | `/api/v1/admin/emi/providers` | Create a bank financing partner |
+| `PATCH` | `/api/v1/admin/emi/providers/:id` | Toggle provider active status |
+| `GET` | `/api/v1/admin/emi/plans` | List configured EMI plans |
+| `POST` | `/api/v1/admin/emi/plans` | Create a new EMI financing plan |
+| `PATCH` | `/api/v1/admin/emi/plans/:id` | Toggle EMI plan active status |
+| `GET` | `/api/v1/admin/applications` | List customer financing applications |
+| `PATCH` | `/api/v1/admin/applications/:id/status` | Update application status (`APPROVED`, `REJECTED`, etc.) |
+| `GET` | `/api/v1/admin/audit-logs` | View administrative audit trail |
+
+---
+
+## Database Model
+
+The database is modeled in PostgreSQL using Prisma ORM:
+
+- **Brand & Category**: Product organization and taxonomy.
+- **Product & ProductVariant**: Products with color, storage, pricing (MRP and selling price), and inventory.
+- **ProductImage & Specification**: Media galleries and technical specification key-values per variant.
+- **EMIProvider & EMIPlan**: Financial partners and customizable financing terms (tenure, interest rate, cashback, processing fee, zero-cost flag).
+- **EMIApplication**: Customer loan submissions with immutable snapshot contracts storing frozen terms at application time.
+- **AdminUser & AuditLog**: Administrative accounts and transactional change records.
+
+---
+
+## Local Development
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/gtathelegend/emi-marketplace-app.git
+cd emi-marketplace-app
+```
+
+### 2. Configure Environment Variables
+
+**Backend (`backend/.env`):**
 ```ini
 PORT=5000
 NODE_ENV=development
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/fineemi_db?schema=public
-CORS_ORIGIN=http://localhost:5173
-JWT_SECRET=dev_jwt_secret_key_change_in_production_1fi_2026
-JWT_EXPIRES_IN=8h
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/fineemi_db?schema=public"
+CORS_ORIGIN="http://localhost:5173"
+JWT_SECRET="dev_jwt_secret_key_change_in_production_1fi_2026"
+JWT_EXPIRES_IN="8h"
 ```
 
----
+**Frontend (`frontend/.env`):**
+```ini
+VITE_API_BASE_URL="http://localhost:5000/api/v1"
+```
 
-## 6. Running Local Services
-
-### Backend Commands
+### 3. Backend Setup
 ```bash
 cd backend
 npm install
 npm run prisma:generate
-npm run seed              # Seeds catalog & demo admin account
-npm run dev               # Starts server at http://localhost:5000
+npm run prisma:migrate
+npm run prisma:seed
+npm run dev
 ```
+Backend will start on `http://localhost:5000`.
 
-### Frontend Commands
+### 4. Frontend Setup
+In a new terminal:
 ```bash
 cd frontend
 npm install
-npm run dev               # Starts frontend dev server at http://localhost:5173
+npm run dev
 ```
+Frontend will start on `http://localhost:5173`.
 
 ---
 
-## 7. Verification & Testing
+## Running Tests & Building
 
+### Backend Tests & Build
 ```bash
-# Run backend Vitest test suite (42 tests)
 cd backend
-npm test
+npm test -- --run     # Run Vitest test suite (42 tests)
+npm run build         # Compile TypeScript production bundle
+```
 
-# Build backend production TypeScript bundle
-cd backend
-npm run build
-
-# Run frontend Vitest test suite (3 tests)
+### Frontend Tests & Build
+```bash
 cd frontend
-npm test
-
-# Build frontend production bundle
-cd frontend
-npm run build
+npm test -- --run     # Run Vitest component tests (3 tests)
+npm run build         # Build production Vite bundle
 ```
 
 ---
 
-## 8. Admin Demo Credentials
+## Admin Demo Credentials
 
-For evaluation purposes, the database seed script generates a demo admin account:
+For testing administrative workflows, the seed script creates a default administrator:
 - **Email**: `admin@1fi.in`
 - **Password**: `Admin@12345`
-- **Role**: `SUPER_ADMIN`
-
-*(Note: Production deployments must rotate credentials via environment variables.)*
+- **Portal URL**: `/admin/login`

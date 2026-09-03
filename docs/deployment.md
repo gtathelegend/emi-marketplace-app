@@ -31,7 +31,7 @@
 | `PORT` | HTTP port provided by hosting environment | `5000` or `10000` |
 | `NODE_ENV` | Application environment mode | `production` |
 | `DATABASE_URL` | PostgreSQL connection string | `postgresql://user:pass@ep-prod.neon.tech/fineemi?sslmode=require` |
-| `CORS_ORIGIN` | Authorized frontend origin | `https://fineemi-marketplace.vercel.app` |
+| `CORS_ORIGIN` | Authorized frontend origin | `https://emi-marketplace-app.vercel.app` |
 | `JWT_SECRET` | Secret key for signing admin JWT tokens | `prod_super_secret_key_change_before_deploy_2026` |
 | `JWT_EXPIRES_IN` | JWT token validity duration | `8h` |
 
@@ -39,7 +39,7 @@
 
 | Variable Name | Production Description | Example Value |
 |---|---|---|
-| `VITE_API_BASE_URL` | Production REST API base URL | `https://fineemi-api.onrender.com/api/v1` |
+| `VITE_API_BASE_URL` | Production REST API base URL | `https://emi-marketplace-app.onrender.com/api/v1` |
 
 ---
 
@@ -78,7 +78,7 @@ npx prisma db seed
 
 1. **Health Verification**:
    ```http
-   GET https://fineemi-api.onrender.com/api/v1/health
+   GET https://emi-marketplace-app.onrender.com/api/v1/health
    ```
    Expect HTTP 200 `{ "success": true, "data": { "status": "healthy" } }`.
 

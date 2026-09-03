@@ -17,9 +17,9 @@ export const MainLayout: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
             <div>
               <p className="font-semibold text-slate-700">FinEmi Marketplace</p>
-              <p className="mt-0.5">Authoritative Server-Side EMI Financing Platform</p>
+              <p className="mt-0.5">Browse products with flexible EMI financing options.</p>
             </div>
-            <p>© 2026 FinEmi Marketplace. 1Fi SDE1 Assignment.</p>
+            <p>© 2026 FinEmi Marketplace</p>
           </div>
         </Container>
       </footer>

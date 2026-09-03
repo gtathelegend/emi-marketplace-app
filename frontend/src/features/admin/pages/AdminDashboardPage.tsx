@@ -100,7 +100,7 @@ export const AdminDashboardPage: React.FC = () => {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-white">System Overview</h1>
-        <p className="text-xs text-slate-400">Live authoritative database metrics</p>
+        <p className="text-xs text-slate-400">Live marketplace statistics</p>
       </div>
 
       {/* Metric Cards */}
@@ -123,12 +123,12 @@ export const AdminDashboardPage: React.FC = () => {
         ))}
       </div>
 
-      {/* Recent Administrative Activity Stream */}
+      {/* Recent Activity Stream */}
       <div className="p-6 rounded-2xl bg-slate-950 border border-slate-800 space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-base font-bold text-white flex items-center gap-2">
             <History className="w-5 h-5 text-emerald-400" />
-            <span>Recent Administrative Activity Log</span>
+            <span>Recent Activity Log</span>
           </h3>
           <Link to="/admin/audit-logs" className="text-xs text-emerald-400 hover:underline">
             View All Audit Logs

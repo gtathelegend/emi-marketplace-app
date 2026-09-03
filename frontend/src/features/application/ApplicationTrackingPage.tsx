@@ -15,6 +15,12 @@ export const ApplicationTrackingPage: React.FC = () => {
     applicationNumber || ''
   );
 
+  React.useEffect(() => {
+    if (applicationNumber) {
+      document.title = `Application ${applicationNumber} | FinEmi Marketplace`;
+    }
+  }, [applicationNumber]);
+
   const formatINR = (val: number) =>
     new Intl.NumberFormat('en-IN', {
       style: 'currency',
@@ -74,7 +80,7 @@ export const ApplicationTrackingPage: React.FC = () => {
             EMI Application Submitted Successfully
           </h1>
           <p className="text-sm text-ggray max-w-md mx-auto">
-            Your financing request has been recorded. Below is your server-verified immutable contract snapshot.
+            Your financing request has been recorded. Below are your application details.
           </p>
         </div>
 
@@ -94,9 +100,6 @@ export const ApplicationTrackingPage: React.FC = () => {
               <Badge variant="info" size="md">
                 <Clock className="w-3.5 h-3.5" />
                 {application.status}
-              </Badge>
-              <Badge variant="promotional" size="md">
-                Snapshot Frozen
               </Badge>
             </div>
           </div>
@@ -123,9 +126,9 @@ export const ApplicationTrackingPage: React.FC = () => {
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
             <h3 className="text-base font-bold text-gdark flex items-center gap-2">
               <ShieldCheck className="w-5 h-5 text-gblue-600" />
-              <span>Immutable Commercial Contract Snapshot</span>
+              <span>Financing Plan Summary</span>
             </h3>
-            <span className="text-xs text-ggray">Recorded: {new Date(application.appliedAt).toLocaleDateString()}</span>
+            <span className="text-xs text-ggray">Submitted: {new Date(application.appliedAt).toLocaleDateString()}</span>
           </div>
 
           <div className="space-y-3">

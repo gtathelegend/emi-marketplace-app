@@ -28,6 +28,10 @@ export const CatalogPage: React.FC = () => {
     setSearchInput(searchParam);
   }, [searchParam]);
 
+  useEffect(() => {
+    document.title = 'FinEmi Marketplace';
+  }, []);
+
   const { data, isLoading, isError, error, refetch } = useProducts({
     page,
     limit,
@@ -74,10 +78,10 @@ export const CatalogPage: React.FC = () => {
           <div className="max-w-2xl space-y-2">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gblue-50 border border-gblue-200 text-gblue-700 text-xs font-bold uppercase tracking-wider">
               <ShieldCheck className="w-3.5 h-3.5" />
-              Verified EMI Marketplace
+              EMI Marketplace
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gdark">
-              Shop Flagship Electronics on Easy EMI
+              Shop Products with Flexible EMI Options
             </h1>
             <p className="text-sm text-ggray">
               Browse top smartphones, laptops, and audio gear with zero-cost EMI plans and instant bank cashback.

@@ -86,7 +86,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
       isOpen={isOpen}
       onClose={onClose}
       title="Apply for EMI Financing"
-      description="Instant server-authoritative loan application approval"
+      description="Complete your details to submit your financing application"
       size="md"
     >
       <form onSubmit={handleSubmit} className="space-y-6">

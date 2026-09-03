@@ -45,7 +45,7 @@ export const AdminLoginPage: React.FC = () => {
             FinEmi Admin Portal
           </h1>
           <p className="text-xs sm:text-sm text-slate-400">
-            Authoritative marketplace management & audit engine
+            Marketplace management and administration
           </p>
         </div>
 
