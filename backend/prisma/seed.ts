@@ -71,33 +71,33 @@ async function main() {
   // 3. Seed EMI Providers
   const hdfc = await prisma.eMIProvider.upsert({
     where: { code: 'HDFC_BANK' },
-    update: {},
+    update: { logoUrl: '/brand/hdfc.svg' },
     create: {
       name: 'HDFC Bank',
       code: 'HDFC_BANK',
-      logoUrl: 'https://assets.1fi.in/banks/hdfc.svg',
+      logoUrl: '/brand/hdfc.svg',
       isActive: true,
     },
   });
 
   const icici = await prisma.eMIProvider.upsert({
     where: { code: 'ICICI_BANK' },
-    update: {},
+    update: { logoUrl: '/brand/icici.svg' },
     create: {
       name: 'ICICI Bank',
       code: 'ICICI_BANK',
-      logoUrl: 'https://assets.1fi.in/banks/icici.svg',
+      logoUrl: '/brand/icici.svg',
       isActive: true,
     },
   });
 
   const onefi = await prisma.eMIProvider.upsert({
     where: { code: 'ONEFI_CREDIT' },
-    update: {},
+    update: { logoUrl: '/brand/1fi.svg' },
     create: {
       name: '1Fi Credit',
       code: 'ONEFI_CREDIT',
-      logoUrl: 'https://assets.1fi.in/banks/1fi.svg',
+      logoUrl: '/brand/1fi.svg',
       isActive: true,
     },
   });

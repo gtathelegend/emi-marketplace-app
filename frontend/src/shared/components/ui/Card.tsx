@@ -14,11 +14,11 @@ export const Card: React.FC<CardProps> = ({
   ...props
 }) => {
   const variantClasses = {
-    default: 'bg-white border border-slate-200 shadow-card',
-    elevated: 'bg-white border border-slate-100 shadow-card-hover',
+    default: 'bg-white border border-gborder shadow-card',
+    elevated: 'bg-white border border-gborder shadow-card-hover',
     interactive:
-      'bg-white border border-slate-200 shadow-card hover:shadow-card-hover hover:border-slate-300 transition-all duration-200 cursor-pointer active:scale-[0.99]',
-    bordered: 'bg-slate-50/50 border border-slate-200',
+      'bg-white border border-gborder shadow-card hover:shadow-card-hover hover:border-slate-400 transition-all duration-200 cursor-pointer active:scale-[0.99]',
+    bordered: 'bg-slate-50/60 border border-gborder',
   };
 
   const paddingClasses = {

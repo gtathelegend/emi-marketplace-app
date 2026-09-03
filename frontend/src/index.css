@@ -9,11 +9,11 @@
   }
 
   body {
-    @apply bg-slate-50 text-slate-900 font-sans antialiased min-h-screen flex flex-col;
+    @apply bg-gbg text-gdark font-sans antialiased min-h-screen flex flex-col;
   }
 
   ::selection {
-    @apply bg-brand-100 text-brand-900;
+    @apply bg-gblue-50 text-gblue-800;
   }
 }
 

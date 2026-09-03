@@ -14,22 +14,22 @@ export const Badge: React.FC<BadgeProps> = ({
   ...props
 }) => {
   const variantClasses = {
-    success: 'bg-emerald-50 text-emerald-700 border-emerald-200/80',
-    warning: 'bg-amber-50 text-amber-700 border-amber-200/80',
-    info: 'bg-blue-50 text-blue-700 border-blue-200/80',
-    neutral: 'bg-slate-100 text-slate-700 border-slate-200',
-    promotional: 'bg-brand-50 text-brand-700 border-brand-200/80 font-bold',
+    success: 'bg-emerald-50 text-emerald-700 border-emerald-200/80 font-medium',
+    warning: 'bg-amber-50 text-amber-700 border-amber-200/80 font-medium',
+    info: 'bg-gblue-50 text-gblue-700 border-gblue-200/80 font-medium',
+    neutral: 'bg-slate-100 text-slate-700 border-slate-200 font-medium',
+    promotional: 'bg-emerald-50 text-emerald-800 border-emerald-200 font-semibold',
   };
 
   const sizeClasses = {
-    sm: 'text-[11px] px-2 py-0.5 tracking-tight',
-    md: 'text-xs px-2.5 py-1',
+    sm: 'text-[11px] px-2 py-0.5 tracking-tight rounded-md',
+    md: 'text-xs px-2.5 py-1 rounded-lg',
   };
 
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1 font-medium border rounded-lg whitespace-nowrap',
+        'inline-flex items-center gap-1 border whitespace-nowrap transition-colors',
         variantClasses[variant],
         sizeClasses[size],
         className

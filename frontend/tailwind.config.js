@@ -7,6 +7,16 @@ export default {
   theme: {
     extend: {
       colors: {
+        gblue: {
+          50: '#e8f0fe',
+          100: '#d2e3fc',
+          200: '#a8c7fa',
+          500: '#1a73e8',
+          600: '#1a73e8',
+          700: '#1557b0',
+          800: '#174ea6',
+          900: '#185abc',
+        },
         brand: {
           50: '#ecfdf5',
           100: '#d1fae5',
@@ -20,6 +30,10 @@ export default {
           900: '#064e3b',
           950: '#022c22',
         },
+        gdark: '#202124',
+        ggray: '#5f6368',
+        gbg: '#f8f9fa',
+        gborder: '#dadce0',
         navy: {
           50: '#f8fafc',
           100: '#f1f5f9',
@@ -48,13 +62,15 @@ export default {
         ],
       },
       boxShadow: {
-        card: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03)',
-        'card-hover': '0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.03)',
-        modal: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        card: '0 1px 2px 0 rgba(60,64,67,0.1), 0 1px 3px 1px rgba(60,64,67,0.08)',
+        'card-hover': '0 2px 6px 2px rgba(60,64,67,0.15), 0 1px 2px 0 rgba(60,64,67,0.3)',
+        'material-selected': '0 1px 4px 0 rgba(26,115,232,0.25)',
+        modal: '0 8px 28px 0 rgba(60,64,67,0.28)',
       },
       borderRadius: {
         xl: '0.75rem',
         '2xl': '1rem',
+        '3xl': '1.5rem',
       },
     },
   },

@@ -51,7 +51,7 @@ export const Modal: React.FC<ModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
+        className="fixed inset-0 bg-gdark/50 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -61,22 +61,22 @@ export const Modal: React.FC<ModalProps> = ({
         role="dialog"
         aria-modal="true"
         className={cn(
-          'relative w-full bg-white rounded-t-3xl sm:rounded-2xl shadow-modal overflow-hidden z-10 max-h-[90vh] flex flex-col animate-in slide-in-from-bottom-6 sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200',
+          'relative w-full bg-white rounded-t-3xl sm:rounded-3xl shadow-modal overflow-hidden z-10 max-h-[90vh] flex flex-col animate-in slide-in-from-bottom-6 sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200 border border-gborder',
           sizeClasses[size]
         )}
       >
         {/* Header */}
         {(title || description) && (
-          <div className="px-6 py-4 border-b border-slate-100 flex items-start justify-between">
+          <div className="px-6 py-4.5 border-b border-slate-100 flex items-start justify-between">
             <div>
-              {title && <h3 className="text-lg font-bold text-slate-900">{title}</h3>}
+              {title && <h3 className="text-lg font-bold text-gdark">{title}</h3>}
               {description && (
-                <p className="text-xs sm:text-sm text-slate-500 mt-0.5">{description}</p>
+                <p className="text-xs sm:text-sm text-ggray mt-0.5">{description}</p>
               )}
             </div>
             <button
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+              className="p-1.5 text-ggray hover:text-gdark hover:bg-slate-100 rounded-xl transition-colors"
               aria-label="Close dialog"
             >
               <X className="w-5 h-5" />

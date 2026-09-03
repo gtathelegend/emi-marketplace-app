@@ -8,7 +8,7 @@ import { SkeletonCard } from '../../shared/components/ui/Skeleton';
 import { EmptyState } from '../../shared/components/ui/EmptyState';
 import { ErrorState } from '../../shared/components/ui/ErrorState';
 import { Button } from '../../shared/components/ui/Button';
-import { Search, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react';
 
 export const CatalogPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -67,26 +67,26 @@ export const CatalogPage: React.FC = () => {
   };
 
   return (
-    <div className="py-8 sm:py-12 bg-slate-50 min-h-screen">
+    <div className="py-6 sm:py-10 bg-gbg min-h-screen">
       <Container size="lg">
         {/* Banner / Value Prop */}
-        <div className="mb-8 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-navy-900 via-navy-800 to-brand-900 text-white shadow-xl relative overflow-hidden">
-          <div className="relative z-10 max-w-2xl space-y-3">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-500/20 border border-brand-400/30 text-brand-300 text-xs font-bold uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5" />
-              100% Server Authoritative Financing
+        <div className="mb-8 p-6 sm:p-8 rounded-3xl bg-white border border-gborder shadow-card relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="max-w-2xl space-y-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gblue-50 border border-gblue-200 text-gblue-700 text-xs font-bold uppercase tracking-wider">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              Verified EMI Marketplace
             </div>
-            <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-white">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gdark">
               Shop Flagship Electronics on Easy EMI
             </h1>
-            <p className="text-sm sm:text-base text-slate-300">
+            <p className="text-sm text-ggray">
               Browse top smartphones, laptops, and audio gear with zero-cost EMI plans and instant bank cashback.
             </p>
           </div>
         </div>
 
         {/* Search and Filters Control Bar */}
-        <div className="mb-8 flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center bg-white p-4 rounded-2xl border border-slate-200 shadow-card">
+        <div className="mb-8 flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center bg-white p-4 rounded-2xl border border-gborder shadow-card">
           {/* Search Form */}
           <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-lg">
             <input
@@ -94,12 +94,12 @@ export const CatalogPage: React.FC = () => {
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Search products (e.g. iPhone, S24, MacBook)..."
-              className="w-full bg-slate-100 text-sm text-slate-900 pl-10 pr-20 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition-all"
+              className="w-full bg-slate-100/90 text-sm text-gdark pl-10 pr-22 py-2.5 rounded-xl border border-gborder focus:outline-none focus:ring-2 focus:ring-gblue-500 focus:bg-white transition-all placeholder:text-slate-400"
             />
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
             <button
               type="submit"
-              className="absolute right-1.5 top-1.5 px-3 py-1.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-lg transition-colors"
+              className="absolute right-1.5 top-1.5 px-3.5 py-1.5 bg-gblue-600 hover:bg-gblue-700 active:bg-gblue-800 text-white text-xs font-semibold rounded-lg transition-colors"
             >
               Search
             </button>
@@ -111,7 +111,7 @@ export const CatalogPage: React.FC = () => {
             <select
               value={brandParam}
               onChange={(e) => handleFilterChange('brand', e.target.value)}
-              className="text-xs sm:text-sm bg-slate-100 border border-slate-200 text-slate-700 font-semibold px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="text-xs sm:text-sm bg-slate-100/90 border border-gborder text-gdark font-semibold px-3.5 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-gblue-500"
             >
               <option value="">All Brands</option>
               <option value="apple">Apple</option>
@@ -123,7 +123,7 @@ export const CatalogPage: React.FC = () => {
             <select
               value={categoryParam}
               onChange={(e) => handleFilterChange('category', e.target.value)}
-              className="text-xs sm:text-sm bg-slate-100 border border-slate-200 text-slate-700 font-semibold px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="text-xs sm:text-sm bg-slate-100/90 border border-gborder text-gdark font-semibold px-3.5 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-gblue-500"
             >
               <option value="">All Categories</option>
               <option value="smartphones">Smartphones</option>
@@ -135,7 +135,7 @@ export const CatalogPage: React.FC = () => {
             <select
               value={sortParam}
               onChange={(e) => handleFilterChange('sort', e.target.value)}
-              className="text-xs sm:text-sm bg-slate-100 border border-slate-200 text-slate-700 font-semibold px-3 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="text-xs sm:text-sm bg-slate-100/90 border border-gborder text-gdark font-semibold px-3.5 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-gblue-500"
             >
               <option value="newest">Sort by: Newest</option>
               <option value="price_asc">Price: Low to High</option>
@@ -197,8 +197,8 @@ export const CatalogPage: React.FC = () => {
 
             {/* Pagination Controls */}
             {data.pagination && data.pagination.totalPages > 1 && (
-              <div className="mt-12 flex items-center justify-between border-t border-slate-200 pt-6">
-                <span className="text-xs sm:text-sm text-slate-500 font-medium">
+              <div className="mt-12 flex items-center justify-between border-t border-gborder pt-6">
+                <span className="text-xs sm:text-sm text-ggray font-medium">
                   Showing page {data.pagination.page} of {data.pagination.totalPages} ({data.pagination.total} products total)
                 </span>
 

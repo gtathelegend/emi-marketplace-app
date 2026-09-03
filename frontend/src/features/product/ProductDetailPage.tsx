@@ -12,7 +12,18 @@ import { Card } from '../../shared/components/ui/Card';
 import { Skeleton } from '../../shared/components/ui/Skeleton';
 import { ErrorState } from '../../shared/components/ui/ErrorState';
 import { ApplicationModal } from './ApplicationModal';
-import { Star, ShieldCheck, ChevronRight, CheckCircle2, ArrowRight } from 'lucide-react';
+import {
+  Star,
+  ShieldCheck,
+  ChevronRight,
+  CheckCircle2,
+  ArrowRight,
+  Zap,
+  Lock,
+  Clock,
+  Sliders,
+  Check,
+} from 'lucide-react';
 
 export const ProductDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -43,7 +54,7 @@ export const ProductDetailPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="py-12 bg-slate-50 min-h-screen">
+      <div className="py-12 bg-gbg min-h-screen">
         <Container size="lg">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div className="lg:col-span-6 space-y-4">
@@ -67,7 +78,7 @@ export const ProductDetailPage: React.FC = () => {
 
   if (isError || !product) {
     return (
-      <div className="py-16 bg-slate-50 min-h-screen">
+      <div className="py-16 bg-gbg min-h-screen">
         <Container size="md">
           <ErrorState
             title="Product Not Found"
@@ -148,103 +159,86 @@ export const ProductDetailPage: React.FC = () => {
     }).format(val);
 
   return (
-    <div className="py-8 sm:py-12 bg-slate-50 min-h-screen">
+    <div className="py-6 sm:py-10 bg-gbg min-h-screen">
       <Container size="lg">
         {/* Breadcrumb Navigation */}
-        <nav className="flex items-center gap-2 text-xs sm:text-sm text-slate-500 mb-6">
-          <Link to="/products" className="hover:text-brand-600 font-medium">
+        <nav className="flex items-center gap-2 text-xs sm:text-sm text-ggray mb-6">
+          <Link to="/products" className="hover:text-gblue-600 font-medium transition-colors">
             Catalog
           </Link>
-          <ChevronRight className="w-3.5 h-3.5" />
+          <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
           <span className="font-semibold text-slate-700">{product.category.name}</span>
-          <ChevronRight className="w-3.5 h-3.5" />
-          <span className="font-bold text-slate-900 line-clamp-1">{product.title}</span>
+          <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+          <span className="font-bold text-gdark line-clamp-1">{product.title}</span>
         </nav>
 
-        {/* Main Product Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* Left Column: Image Gallery */}
+        {/* Product Overview: Gallery (Left) & Details / Variant Selectors (Right) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start mb-10">
+          {/* Left Column: Product Image Gallery */}
           <div className="lg:col-span-6 space-y-4">
-            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-card">
+            <Card variant="default" padding="md" className="bg-white rounded-2xl border-gborder shadow-card">
               <ProductImage
                 src={currentImage}
                 alt={product.title}
                 aspectRatio="square"
-                className="w-full h-80 sm:h-96"
+                className="w-full h-80 sm:h-96 object-contain"
               />
-            </div>
+            </Card>
 
             {/* Gallery Thumbnails */}
             {selectedVariant.images.length > 1 && (
-              <div className="flex gap-3 overflow-x-auto pb-2">
+              <div className="flex gap-3 overflow-x-auto pb-1">
                 {selectedVariant.images.map((img) => (
                   <button
                     key={img.id}
                     onClick={() => setSelectedImageUrl(img.url)}
                     className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all shrink-0 bg-white ${
                       currentImage === img.url
-                        ? 'border-brand-600 ring-2 ring-brand-500/20'
-                        : 'border-slate-200 hover:border-slate-300'
+                        ? 'border-gblue-600 ring-2 ring-gblue-500/20'
+                        : 'border-gborder hover:border-slate-400'
                     }`}
                   >
-                    <img src={img.url} alt={img.altText} className="w-full h-full object-contain p-1" />
+                    <img src={img.url} alt={img.altText} className="w-full h-full object-contain p-1.5" />
                   </button>
                 ))}
               </div>
             )}
-
-            {/* Specifications Card */}
-            {selectedVariant.specifications.length > 0 && (
-              <Card variant="default" className="mt-8">
-                <h3 className="text-base font-bold text-slate-900 mb-4 border-b border-slate-100 pb-2">
-                  Technical Specifications
-                </h3>
-                <div className="divide-y divide-slate-100">
-                  {selectedVariant.specifications.map((spec) => (
-                    <div key={spec.id} className="py-2.5 flex justify-between text-xs sm:text-sm">
-                      <span className="font-semibold text-slate-500">{spec.key}</span>
-                      <span className="font-bold text-slate-800 text-right">{spec.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </Card>
-            )}
           </div>
 
-          {/* Right Column: Product Detail, Variants & EMI Engine */}
+          {/* Right Column: Product Detail & Variant Selection */}
           <div className="lg:col-span-6 space-y-6">
             {/* Header info */}
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <Badge variant="promotional">{product.brand.name}</Badge>
+                <Badge variant="info">{product.brand.name}</Badge>
                 <Badge variant="neutral">{product.category.name}</Badge>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gdark">
                 {product.title}
               </h1>
 
               {product.subtitle && (
-                <p className="mt-1 text-sm text-slate-600">{product.subtitle}</p>
+                <p className="mt-1.5 text-sm text-ggray">{product.subtitle}</p>
               )}
 
               {/* Rating */}
               <div className="flex items-center gap-2 mt-3">
-                <div className="flex items-center gap-1 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-lg text-amber-700 text-xs font-bold">
+                <div className="flex items-center gap-1 bg-amber-50 border border-amber-200/80 px-2.5 py-0.5 rounded-lg text-amber-800 text-xs font-bold">
                   <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                   <span>{product.rating}</span>
                 </div>
-                <span className="text-xs text-slate-400">({product.reviewCount} verified ratings)</span>
+                <span className="text-xs text-ggray">({product.reviewCount} verified ratings)</span>
               </div>
             </div>
 
-            {/* Pricing Section */}
-            <Card variant="bordered" className="bg-slate-100/60 p-4 rounded-2xl">
+            {/* Pricing Card */}
+            <Card variant="bordered" padding="sm" className="bg-slate-100/70 border-gborder rounded-2xl">
               <PriceDisplay price={selectedVariant.price} mrp={selectedVariant.mrp} size="lg" showSavings />
             </Card>
 
             {/* Variant Selection (Color & Storage) */}
-            <div className="space-y-4 pt-2">
+            <div className="space-y-4 pt-1">
               <SegmentedSelector
                 label="Select Color"
                 options={colorOptions}
@@ -263,22 +257,104 @@ export const ProductDetailPage: React.FC = () => {
                 />
               )}
             </div>
+          </div>
+        </div>
 
-            {/* EMI Plans Section */}
-            <div className="space-y-4 pt-4 border-t border-slate-200">
-              <div className="flex items-center justify-between">
-                <h3 className="text-base font-bold text-slate-900 flex items-center gap-1.5">
-                  Available EMI Financing Plans
-                </h3>
-                <span className="text-xs text-emerald-700 font-bold bg-emerald-50 px-2 py-1 rounded-lg">
+        {/* Lower Content Grid: Specifications & Trust Card (Left) vs EMI Plans & Breakdown (Right) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+          {/* Left Column: Specifications & Trust Card */}
+          <div className="lg:col-span-5 space-y-6">
+            {/* Technical Specifications Card */}
+            {selectedVariant.specifications.length > 0 && (
+              <Card variant="default" className="bg-white border-gborder rounded-2xl">
+                <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-3">
+                  <Sliders className="w-4 h-4 text-gblue-600" />
+                  <h3 className="text-base font-bold text-gdark">Technical Specifications</h3>
+                </div>
+                <div className="divide-y divide-slate-100">
+                  {selectedVariant.specifications.map((spec) => (
+                    <div key={spec.id} className="py-3 flex justify-between items-center text-xs sm:text-sm">
+                      <div className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-gblue-500 shrink-0" />
+                        <span className="font-semibold text-gdark">{spec.key}</span>
+                      </div>
+                      <span className="font-medium text-ggray text-right">{spec.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            )}
+
+            {/* "Why buy on FinEmi?" Trust Module */}
+            <Card variant="default" className="bg-white border-gborder rounded-2xl">
+              <h3 className="text-base font-bold text-gdark mb-3 flex items-center gap-2 border-b border-slate-100 pb-3">
+                <ShieldCheck className="w-5 h-5 text-emerald-600" />
+                <span>Why buy on FinEmi?</span>
+              </h3>
+              <div className="space-y-3.5 text-xs sm:text-sm text-gdark">
+                <div className="flex items-start gap-2.5">
+                  <div className="w-5 h-5 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                    <Check className="w-3.5 h-3.5 stroke-[3]" />
+                  </div>
+                  <div>
+                    <span className="font-bold block text-gdark">Authoritative Bank Offers</span>
+                    <span className="text-xs text-ggray">Direct quotes from verified lending partners</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2.5">
+                  <div className="w-5 h-5 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                    <Zap className="w-3.5 h-3.5 stroke-[2.5]" />
+                  </div>
+                  <div>
+                    <span className="font-bold block text-gdark">Fast & Paperless Applications</span>
+                    <span className="text-xs text-ggray">Instant approval with digital submission</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2.5">
+                  <div className="w-5 h-5 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                    <Clock className="w-3.5 h-3.5 stroke-[2.5]" />
+                  </div>
+                  <div>
+                    <span className="font-bold block text-gdark">Real-Time Application Tracking</span>
+                    <span className="text-xs text-ggray">Live status updates with reference ID</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2.5">
+                  <div className="w-5 h-5 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+                    <Lock className="w-3.5 h-3.5 stroke-[2.5]" />
+                  </div>
+                  <div>
+                    <span className="font-bold block text-gdark">Transparent Charges</span>
+                    <span className="text-xs text-ggray">Zero hidden fees or unexpected costs</span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Right Column: EMI Section (Cards Grid & Financing Summary) */}
+          <div className="lg:col-span-7 space-y-6">
+            {/* EMI Financing Plans Section */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <div>
+                  <h3 className="text-lg font-bold text-gdark">Available EMI Financing Plans</h3>
+                  <p className="text-xs text-ggray">Select a plan to view complete breakdown</p>
+                </div>
+                <Badge variant="success" size="sm">
                   Authoritative Quotes
-                </span>
+                </Badge>
               </div>
 
               {selectedVariant.emiPlans.length === 0 ? (
-                <p className="text-xs text-slate-500">No active EMI plans for this variant.</p>
+                <Card variant="bordered" className="text-center py-8">
+                  <p className="text-sm text-ggray">No active EMI plans available for this variant.</p>
+                </Card>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
                   {selectedVariant.emiPlans.map((plan) => (
                     <EmiPlanCard
                       key={plan.id}
@@ -299,20 +375,20 @@ export const ProductDetailPage: React.FC = () => {
               )}
             </div>
 
-            {/* Selected EMI Summary Box */}
+            {/* Selected EMI Summary & Primary CTA Card */}
             {selectedEmiPlan && (
-              <Card variant="elevated" className="bg-gradient-to-br from-white to-brand-50/30 border-brand-200">
-                <h4 className="text-sm font-bold text-slate-900 mb-3 flex items-center justify-between">
-                  <span>Financing Breakdown</span>
-                  <span className="text-xs font-semibold text-brand-700">
+              <Card variant="elevated" className="bg-white border-2 border-gblue-600 rounded-2xl shadow-material-selected">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                  <h4 className="text-base font-bold text-gdark">Your Selected Financing Plan</h4>
+                  <Badge variant="info">
                     {selectedEmiPlan.provider.name} • {selectedEmiPlan.tenureMonths} Months
-                  </span>
-                </h4>
+                  </Badge>
+                </div>
 
-                <div className="space-y-2 text-xs sm:text-sm border-b border-slate-200/80 pb-3 mb-3">
-                  <div className="flex justify-between text-slate-600">
-                    <span>Variant Price</span>
-                    <span className="font-semibold text-slate-900">{formatINR(selectedVariant.price)}</span>
+                <div className="space-y-2 text-xs sm:text-sm border-b border-slate-100 pb-4 mb-4">
+                  <div className="flex justify-between text-ggray">
+                    <span>Product Variant Price</span>
+                    <span className="font-semibold text-gdark">{formatINR(selectedVariant.price)}</span>
                   </div>
 
                   {selectedEmiPlan.cashbackAmount > 0 && (
@@ -322,9 +398,9 @@ export const ProductDetailPage: React.FC = () => {
                     </div>
                   )}
 
-                  <div className="flex justify-between text-slate-600 font-medium pt-1">
+                  <div className="flex justify-between text-gdark font-semibold pt-1 border-t border-slate-100">
                     <span>Net Principal Financed</span>
-                    <span className="font-bold text-slate-900">
+                    <span className="font-bold text-gdark">
                       {formatINR(Math.max(0, selectedVariant.price - selectedEmiPlan.cashbackAmount))}
                     </span>
                   </div>
@@ -337,13 +413,16 @@ export const ProductDetailPage: React.FC = () => {
                   )}
                 </div>
 
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
-                    <span className="text-xs text-slate-500 block">Monthly Installment</span>
-                    <span className="text-xl sm:text-2xl font-black text-brand-700">
-                      {formatINR(Math.round((selectedVariant.price - selectedEmiPlan.cashbackAmount) / selectedEmiPlan.tenureMonths))}
-                    </span>
-                    <span className="text-xs text-slate-500"> / month</span>
+                    <span className="text-xs font-medium text-ggray block">Monthly Installment</span>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-2xl sm:text-3xl font-black text-gblue-600">
+                        {formatINR(Math.round((selectedVariant.price - selectedEmiPlan.cashbackAmount) / selectedEmiPlan.tenureMonths))}
+                      </span>
+                      <span className="text-xs font-semibold text-ggray">/ month</span>
+                    </div>
+                    <span className="text-xs text-ggray">for {selectedEmiPlan.tenureMonths} months ({selectedEmiPlan.interestRate === 0 ? '0%' : `${selectedEmiPlan.interestRate}%`} p.a.)</span>
                   </div>
 
                   <Button
@@ -351,21 +430,22 @@ export const ProductDetailPage: React.FC = () => {
                     size="lg"
                     rightIcon={<ArrowRight className="w-5 h-5" />}
                     onClick={() => setIsModalOpen(true)}
+                    className="w-full sm:w-auto"
                   >
-                    Apply for EMI
+                    Proceed with EMI
                   </Button>
                 </div>
               </Card>
             )}
 
-            {/* Assurance */}
-            <div className="flex items-center justify-around p-3 bg-white rounded-xl border border-slate-200 text-xs text-slate-600 font-medium">
+            {/* Bottom Security Assurance Banner */}
+            <div className="flex items-center justify-around p-3.5 bg-white rounded-xl border border-gborder text-xs text-ggray font-medium">
               <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>Instant Approval</span>
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Instant Digital Approval</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-brand-600" />
+                <ShieldCheck className="w-4 h-4 text-gblue-600 shrink-0" />
                 <span>Server Snapshot Protected</span>
               </div>
             </div>
