@@ -11,8 +11,6 @@ A full-stack EMI marketplace application for browsing products, comparing financ
 | Frontend | [https://emi-app.vedaangsharma.in](https://emi-app.vedaangsharma.in) |
 | Backend  | [https://emi-app-backend.vedaangsharma.in/](https://emi-app-backend.vedaangsharma.in/) |
 
-- **Frontend** is deployed on **Vercel** (fallback: [emi-marketplace-app.vercel.app](https://emi-marketplace-app.vercel.app/))
-- **Backend** is deployed on **Render** (origin: [emi-marketplace-app.onrender.com](https://emi-marketplace-app.onrender.com/))
 - **Database** is hosted on **Neon** (PostgreSQL)
 
 All API endpoints are versioned under `/api/v1`.
