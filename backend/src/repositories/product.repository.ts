@@ -10,12 +10,24 @@ export interface ProductQueryOptions {
   sort: 'newest' | 'price_asc' | 'price_desc' | 'name_asc' | 'name_desc';
 }
 
+interface CacheEntry<T> {
+  data: T;
+  expiresAt: number;
+}
+
 export class ProductRepository {
+  private cache = new Map<string, CacheEntry<any>>();
+  private readonly TTL_MS = 60 * 1000; // 60 seconds
+
   private get db() {
     return prisma;
   }
 
-  public async findManyPublic(options: ProductQueryOptions) {
+  public clearCache(): void {
+    this.cache.clear();
+  }
+
+  private async fetchManyFromDb(options: ProductQueryOptions) {
     const { page, limit, search, brand, category, sort } = options;
     const skip = (page - 1) * limit;
 
@@ -71,7 +83,7 @@ export class ProductRepository {
         break;
     }
 
-    const [items, total] = await this.db.$transaction([
+    const [items, total] = await Promise.all([
       this.db.product.findMany({
         where,
         orderBy,
@@ -133,7 +145,7 @@ export class ProductRepository {
     return { items, total };
   }
 
-  public async findBySlugPublic(slug: string) {
+  private async fetchBySlugFromDb(slug: string) {
     return this.db.product.findFirst({
       where: {
         slug,
@@ -223,6 +235,33 @@ export class ProductRepository {
         },
       },
     });
+  }
+
+  public async findManyPublic(options: ProductQueryOptions): Promise<Awaited<ReturnType<ProductRepository['fetchManyFromDb']>>> {
+    const cacheKey = `findMany:${JSON.stringify(options)}`;
+    const cached = this.cache.get(cacheKey);
+    if (cached && cached.expiresAt > Date.now()) {
+      return cached.data;
+    }
+
+    const result = await this.fetchManyFromDb(options);
+    this.cache.set(cacheKey, { data: result, expiresAt: Date.now() + this.TTL_MS });
+    return result;
+  }
+
+  public async findBySlugPublic(slug: string): Promise<Awaited<ReturnType<ProductRepository['fetchBySlugFromDb']>>> {
+    const cacheKey = `findBySlug:${slug}`;
+    const cached = this.cache.get(cacheKey);
+    if (cached && cached.expiresAt > Date.now()) {
+      return cached.data;
+    }
+
+    const product = await this.fetchBySlugFromDb(slug);
+    if (product) {
+      this.cache.set(cacheKey, { data: product, expiresAt: Date.now() + this.TTL_MS });
+    }
+
+    return product;
   }
 }
 

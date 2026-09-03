@@ -15,6 +15,7 @@ export const getProducts = async (req: Request, res: Response, next: NextFunctio
       sort,
     });
 
+    res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=120');
     sendSuccess(res, result.items, 200, result.pagination);
   } catch (error) {
     next(error);
@@ -26,6 +27,7 @@ export const getProductBySlug = async (req: Request, res: Response, next: NextFu
     const { slug } = req.params;
     const product = await productService.getPublicProductBySlug(slug);
 
+    res.setHeader('Cache-Control', 'public, max-age=60, s-maxage=300, stale-while-revalidate=120');
     sendSuccess(res, product);
   } catch (error) {
     next(error);
