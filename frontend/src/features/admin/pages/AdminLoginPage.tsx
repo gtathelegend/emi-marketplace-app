@@ -42,7 +42,7 @@ export const AdminLoginPage: React.FC = () => {
             <ShieldCheck className="w-8 h-8" />
           </div>
           <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-            FinEmi Admin Portal
+            EMI Admin Portal
           </h1>
           <p className="text-xs sm:text-sm text-slate-400">
             Marketplace management and administration

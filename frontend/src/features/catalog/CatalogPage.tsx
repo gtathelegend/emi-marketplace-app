@@ -29,7 +29,7 @@ export const CatalogPage: React.FC = () => {
   }, [searchParam]);
 
   useEffect(() => {
-    document.title = 'FinEmi Marketplace';
+    document.title = 'EMI App — Products';
   }, []);
 
   const { data, isLoading, isError, error, refetch } = useProducts({
@@ -78,7 +78,7 @@ export const CatalogPage: React.FC = () => {
           <div className="max-w-2xl space-y-1.5">
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-gblue-50 text-gblue-700 text-xs font-semibold">
               <ShieldCheck className="w-3.5 h-3.5" />
-              FinEmi Marketplace
+              EMI App
             </div>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-gdark">
               Shop Products with Flexible EMI Options

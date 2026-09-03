@@ -1,6 +1,6 @@
-# FinEmi Marketplace
+# EMI App
 
-A full-stack EMI marketplace built for the **1Fi SDE1 assignment**. The application demonstrates a database-driven product catalog with product variants, EMI plan selection, server-side EMI calculation, financing application submission with immutable snapshots, REST APIs, PostgreSQL persistence via Prisma ORM, and a responsive React UI with an admin management portal.
+A full-stack EMI marketplace application for browsing products, comparing financing plans, selecting variants, and submitting financing applications. The application uses a database-driven catalog, server-side EMI calculations, REST APIs, PostgreSQL with Prisma ORM, and a responsive React interface with an admin management portal.
 
 ---
 
@@ -16,10 +16,6 @@ A full-stack EMI marketplace built for the **1Fi SDE1 assignment**. The applicat
 - **Database** is hosted on **Neon** (PostgreSQL)
 
 All API endpoints are versioned under `/api/v1`.
-
-> **Demo Video**: `VIDEO_LINK_TO_BE_ADDED`
->
-> The video (2–5 minutes) should demonstrate: product catalog browsing, product detail with variant switching, EMI plan selection, application submission/tracking, admin dashboard, backend API walkthrough, database schema overview, and a brief architecture explanation.
 
 ---
 
@@ -54,29 +50,25 @@ All API endpoints are versioned under `/api/v1`.
 
 ---
 
-## Assignment Requirements
+## Application Capabilities
 
-| Requirement | Implementation |
+| Capability | Technical Implementation |
 |---|---|
-| Dynamic product information from database | PostgreSQL → Prisma ORM → Express REST API → React frontend |
-| Product name, variant, MRP, price, image | `Product`, `ProductVariant` (price, mrp), `ProductImage` models |
+| Database-driven catalog | PostgreSQL → Prisma ORM → Express REST API → React frontend |
+| Product detail & variant models | `Product`, `ProductVariant` (price, mrp), `ProductImage` models |
 | EMI plans (monthly payment, tenure, interest rate) | `EMIPlan` model; server-side `EMICalculator` computes monthly amount |
-| Cashback where applicable | `cashbackAmount` field on `EMIPlan`; deducted from principal |
+| Cashback handling | `cashbackAmount` field on `EMIPlan`; deducted from principal |
 | Selectable EMI plans | Frontend EMI plan selection sends `emiPlanId` to backend |
-| Proceed button / application submission | `POST /api/v1/applications` with immutable contract snapshot |
+| Application submission | `POST /api/v1/applications` with immutable contract snapshot |
 | Unique product URLs | `/products/:slug` — e.g. `/products/apple-iphone-15-pro` |
-| At least 3 products | **15 products** seeded across 7 categories |
-| At least 2 variants per product | All 15 products have **2–3 variants** each (31 total) |
+| Multi-category catalog | 15 products seeded across 7 categories |
+| Multiple product variants | All 15 products have 2–3 variants each (31 total) |
 | React frontend | React 18 + TypeScript + Vite |
-| Tailwind CSS | Tailwind CSS v3.4 |
-| Node.js backend | Node.js + Express + TypeScript |
-| SQL database | PostgreSQL (Neon) via Prisma ORM |
-| Database schema | `backend/prisma/schema.prisma` — 11 models |
-| Seed data | `backend/prisma/seed.ts` — deterministic, idempotent via upserts |
+| Styling | Tailwind CSS v3.4 |
 | Backend API | Express REST API under `/api/v1` |
-| README with setup, API docs, tech stack, schema | This document |
-| Deployed demo | Vercel (frontend) + Render (backend) + Neon (database) |
-| Demo video (2–5 min) | `VIDEO_LINK_TO_BE_ADDED` |
+| Database & ORM | PostgreSQL (Neon) via Prisma ORM (11 models) |
+| Seed dataset | `backend/prisma/seed.ts` — deterministic, idempotent via upserts |
+| Protected admin portal | JWT-authenticated management routes and UI |
 
 ---
 
@@ -736,33 +728,21 @@ The frontend is a static SPA deployed on Vercel. The backend runs as a standalon
 
 ---
 
-## Admin Demo Credentials
+## Project Status
 
-For testing administrative workflows, the seed script creates a default administrator:
-
-| Field | Value |
-|---|---|
-| Email | `admin@1fi.in` |
-| Password | `Admin@12345` |
-| Portal URL | `/admin/login` |
+- [x] Frontend deployed (Vercel)
+- [x] Backend deployed (Render)
+- [x] PostgreSQL database deployed (Neon)
+- [x] Seed data included
+- [x] Automated tests included
 
 ---
 
-## Final Submission Checklist
+## Demo Video
 
-- [x] GitHub repository
-- [x] Database schema committed (`backend/prisma/schema.prisma`)
-- [x] Seed data committed (`backend/prisma/seed.ts`)
-- [x] README complete
-- [x] Frontend deployed (Vercel)
-- [x] Backend deployed (Render)
-- [x] Database deployed (Neon PostgreSQL)
-- [x] Production frontend verified
-- [x] Direct product URLs verified (`/products/:slug`)
-- [x] API verified (`/api/v1/health`)
-- [ ] Demo video uploaded
-- [ ] Video sharing set to "Anyone with the link"
-- [ ] Google Form submitted
+> **Demo Video**: `VIDEO_LINK_TO_BE_ADDED`
+>
+> The demo walks through the product catalog, product details, variant selection, EMI plans, financing application flow, backend API, and database.
 
 ---
 
@@ -771,5 +751,6 @@ For testing administrative workflows, the seed script creates a default administ
 - Financial calculations are performed exclusively server-side; the frontend sends only entity IDs.
 - Production database credentials are never committed to the repository.
 - Environment variables are required for both frontend and backend — see `.env.example` files.
-- The admin credentials listed above are seeded demo credentials for evaluation purposes.
+- The admin credentials (`admin@1fi.in` / `Admin@12345`) are seeded demo credentials for testing and administration.
 - All monetary values in the database use `Decimal(10, 2)` to ensure precise financial arithmetic.
+- All API routes are versioned under `/api/v1`.

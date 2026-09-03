@@ -1,7 +1,7 @@
-# System & Application Architecture — FinEmi Marketplace
+# System & Application Architecture — EMI App
 
 ## 1. Executive Summary & Design Goals
-The **FinEmi Marketplace** application is structured with a clean separation of concerns across a multi-tier architecture. It enforces strict boundary discipline between HTTP routing, validation, business logic, persistence, and external presentations.
+The **EMI App** application is structured with a clean separation of concerns across a multi-tier architecture. It enforces strict boundary discipline between HTTP routing, validation, business logic, persistence, and external presentations.
 
 Key Architectural Principles:
 1. **Layered Decoupling**: Business rules reside exclusively in the Service layer (`Routes -> Middleware -> Controllers -> Services -> Repositories -> Prisma -> PostgreSQL`).
@@ -15,7 +15,7 @@ Key Architectural Principles:
 ## 2. Defensible System Architecture
 
 ```
-                     FINEMI MARKETPLACE
+                           EMI APP
                             │
              ┌──────────────┴──────────────┐
              │                             │

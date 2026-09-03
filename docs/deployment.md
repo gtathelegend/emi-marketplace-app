@@ -1,4 +1,4 @@
-# Deployment & Production Operations Guide — FinEmi Marketplace
+# Deployment & Production Operations Guide — EMI App
 
 ## 1. High-Level Production Architecture
 
@@ -53,7 +53,7 @@ cd backend
 npx prisma migrate deploy
 ```
 
-### Step 3.2: Seed Initial Assignment Catalog Data
+### Step 3.2: Seed Initial Catalog Data
 Seed initial products, variants, bank EMI providers, financing plans, and demo admin user:
 
 ```bash

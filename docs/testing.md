@@ -1,8 +1,8 @@
-# Testing Strategy & Verification Report — FinEmi Marketplace
+# Testing Strategy & Verification Report — EMI App
 
 ## 1. Testing Philosophy & Verification Matrix
 
-The testing suite for **FinEmi Marketplace** prioritizes behavioral verification, domain correctness, financial precision, and security barriers.
+The testing suite for **EMI App** prioritizes behavioral verification, domain correctness, financial precision, and security barriers.
 
 ```
        / \

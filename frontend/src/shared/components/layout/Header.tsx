@@ -27,7 +27,7 @@ export const Header: React.FC = () => {
               <CreditCard className="w-4 h-4" />
             </div>
             <span className="text-lg font-bold tracking-tight text-gdark">
-              FinEmi <span className="font-normal text-ggray text-sm">Marketplace</span>
+              EMI <span className="font-normal text-ggray text-sm">App</span>
             </span>
           </Link>
 

@@ -39,7 +39,7 @@ export const ProductDetailPage: React.FC = () => {
   // Initialize selected variant when product loads
   useEffect(() => {
     if (product && product.variants.length > 0) {
-      document.title = `${product.title} | FinEmi Marketplace`;
+      document.title = `${product.title} | EMI App`;
       const defaultVar = product.variants.find((v) => v.isDefault) || product.variants[0];
       setSelectedVariantId(defaultVar.id);
       if (defaultVar.images.length > 0) {
@@ -226,7 +226,7 @@ export const ProductDetailPage: React.FC = () => {
             <div className="bg-white border border-gborder rounded-2xl p-5 space-y-3">
               <h3 className="text-sm font-bold text-gdark flex items-center gap-2 pb-2 border-b border-slate-100">
                 <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                <span>Why buy on FinEmi?</span>
+                <span>Why buy on EMI App?</span>
               </h3>
               <div className="space-y-2.5 text-xs text-gdark">
                 <div className="flex items-center gap-2">

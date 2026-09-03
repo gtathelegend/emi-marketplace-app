@@ -43,7 +43,7 @@ export const AdminLayout: React.FC = () => {
             <ShieldCheck className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-base font-bold text-white tracking-tight">FinEmi Admin</h2>
+            <h2 className="text-base font-bold text-white tracking-tight">EMI Admin</h2>
             <span className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider">
               Management Portal
             </span>
@@ -100,7 +100,7 @@ export const AdminLayout: React.FC = () => {
       <div className="md:hidden flex items-center justify-between p-4 bg-slate-950 border-b border-slate-800">
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-6 h-6 text-emerald-500" />
-          <span className="font-bold text-white text-base">FinEmi Admin</span>
+          <span className="font-bold text-white text-base">EMI Admin</span>
         </div>
 
         <button

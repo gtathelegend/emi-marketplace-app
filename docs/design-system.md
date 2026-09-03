@@ -1,8 +1,8 @@
-# FinEmi Marketplace — Design System & Visual Foundation
+# EMI App — Design System & Visual Foundation
 
 ## 1. Executive Summary & Brand Direction
 
-**FinEmi Marketplace** is an authoritative, server-driven financial e-commerce platform. Its visual design system is built to communicate:
+**EMI App** is an authoritative, server-driven financial e-commerce platform. Its visual design system is built to communicate:
 - **Trust & Security**: High-contrast, clean typography and clear server-verified financial tags.
 - **Affordability & Clarity**: EMI monthly badges (`Starting ₹2,198/mo`) highlighted with high-contrast promotional accents.
 - **Modern Indian Fintech Aesthetic**: Crisp slate backgrounds, emerald brand accents (`#059669` / `#047857`), and restrained elevation.

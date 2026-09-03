@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { cn } from '../../../utils/cn';
 
-describe('FinEmi Frontend Design Tokens & Class Helper', () => {
+describe('EMI App Frontend Design Tokens & Class Helper', () => {
   it('should merge tailwind classes properly using cn helper', () => {
     const result = cn('px-2 py-1', 'bg-brand-600', { 'text-white': true, 'hidden': false });
     expect(result).toBe('px-2 py-1 bg-brand-600 text-white');

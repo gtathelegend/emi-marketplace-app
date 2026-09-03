@@ -1,4 +1,4 @@
-# Security & Threat Model — FinEmi Marketplace
+# Security & Threat Model — EMI App
 
 ## 1. Authentication & Authorization Security Model
 

@@ -1,4 +1,4 @@
-# API Design Specification — FinEmi Marketplace
+# API Design Specification — EMI App
 
 ## 1. REST API Architecture
 

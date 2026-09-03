@@ -16,7 +16,7 @@ export const ApplicationTrackingPage: React.FC = () => {
 
   React.useEffect(() => {
     if (applicationNumber) {
-      document.title = `Application ${applicationNumber} | FinEmi Marketplace`;
+      document.title = `Application ${applicationNumber} | EMI App`;
     }
   }, [applicationNumber]);
 

@@ -1,13 +1,13 @@
-# 1Fi Marketplace — Requirements & Requirements Traceability Matrix
+# EMI App — System Requirements & Feature Matrix
 
 ## 1. Overview
-**1Fi Marketplace** is a production-grade full-stack EMI marketplace application engineered for the 1Fi SDE1 assignment. It enables customers to discover products, select specific variants (color, storage), explore dynamic EMI options with real-time financial transparency, submit finance applications, and track their applications. Additionally, it provides an admin console for catalogue, variant, EMI plan, application management, and immutable audit logs.
+**EMI App** is a production-grade full-stack EMI marketplace application. It enables customers to discover products, select specific variants (color, storage), explore dynamic EMI options with real-time financial transparency, submit finance applications, and track their applications. Additionally, it provides an admin console for catalogue, variant, EMI plan, application management, and immutable audit logs.
 
 ---
 
-## 2. Assignment Requirements vs. Planned Implementation Matrix
+## 2. Feature & Technical Implementation Matrix
 
-| # | Requirement Category | Assignment Specification | Planned Technical Implementation | Acceptance Criteria |
+| # | Feature Category | Feature Specification | Technical Implementation | Acceptance Criteria |
 |---|---|---|---|---|
 | 1 | **Frontend Tech** | React, Tailwind CSS | React 18, TypeScript, Tailwind CSS, Vite, Lucide Icons, Headless UI / Radix primitives | Fast build, type-safe components, modern fintech aesthetic with zero generic styling |
 | 2 | **Backend Tech** | Node.js, Express | Node.js (v20+), Express.js, TypeScript, Layered Architecture | Modular routes, controllers, services, repositories, middleware |

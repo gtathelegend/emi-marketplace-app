@@ -1,8 +1,8 @@
-# Technical Interview & Demo Script — FinEmi Marketplace
+# Technical Interview & Demo Script — EMI App
 
 ## 1. Demo Narrative Overview
 
-This demo walkthrough demonstrates the end-to-end customer journey, administrative management, and architectural security of **FinEmi Marketplace**.
+This demo walkthrough demonstrates the end-to-end customer journey, administrative management, and architectural security of **EMI App**.
 
 ---
 
@@ -55,7 +55,7 @@ This demo walkthrough demonstrates the end-to-end customer journey, administrati
    - Click **Approve**. Show status transition to `APPROVED`.
 
 4. **Administrative Audit Log (`/admin/audit-logs`)**:
-   - Open `/admin/audit-logs`. Point out the recorded audit log (`UPDATE_APPLICATION_STATUS` by `FinEmi Master Admin`).
+   - Open `/admin/audit-logs`. Point out the recorded audit log (`UPDATE_APPLICATION_STATUS` by `EMI App Master Admin`).
 
 ---
 

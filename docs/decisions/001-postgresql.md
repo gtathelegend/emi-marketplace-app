@@ -1,7 +1,7 @@
 # ADR 001: Selection of PostgreSQL as the Primary Relational Database
 
 ## Context
-The **FinEmi Marketplace** application handles financial transactions, inventory cataloging, EMI financing agreements, and audit logging. Financial loan application snapshots require ACID compliance, strict foreign key constraints, table normalization, and reliable indexing for fast catalog searches and tracking queries.
+The **EMI App** application handles financial transactions, inventory cataloging, EMI financing agreements, and audit logging. Financial loan application snapshots require ACID compliance, strict foreign key constraints, table normalization, and reliable indexing for fast catalog searches and tracking queries.
 
 ## Decision
 We choose **PostgreSQL** (version 15+) as our primary relational database management system, accessed via **Prisma ORM**.

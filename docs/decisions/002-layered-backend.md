@@ -19,7 +19,7 @@ We enforce a strict **Layered Architecture**:
    - *Cons*: Impossible to unit-test financial business logic without mocking Express HTTP objects; high risk of business logic duplication.
 2. **Clean / Hexagonal Architecture (Ports & Adapters)**:
    - *Pros*: High decoupling from frameworks.
-   - *Cons*: Over-engineered for a focused production assignment, introducing unnecessary interface abstractions and boilerplate.
+   - *Cons*: Over-engineered for this application, introducing unnecessary interface abstractions and boilerplate.
 
 ## Reasoning
 - **Testability**: Services can be unit-tested directly in Vitest by calling pure TypeScript methods with mock repository dependencies.

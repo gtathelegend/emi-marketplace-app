@@ -7,7 +7,7 @@ const app = createApp();
 
 if (!process.env.VERCEL) {
   const server = app.listen(env.PORT, () => {
-    logger.info(`🚀 FinEmi Backend listening on port ${env.PORT} [${env.NODE_ENV}]`);
+    logger.info(`🚀 EMI App Backend listening on port ${env.PORT} [${env.NODE_ENV}]`);
     logger.info(`🔗 Canonical Health Check: http://localhost:${env.PORT}/api/v1/health`);
   });
 

@@ -1,8 +1,8 @@
-# Financial & EMI Calculation Engine Specification — FinEmi Marketplace
+# Financial & EMI Calculation Engine Specification — EMI App
 
 ## 1. Executive Summary & Design Principles
 
-The **FinEmi Marketplace Financial Engine** is an authoritative, server-side loan calculation system. It guarantees that customers receive transparent, tamper-proof EMI financing options while preserving complete contract snapshot history for administrative auditing.
+The **EMI App Financial Engine** is an authoritative, server-side loan calculation system. It guarantees that customers receive transparent, tamper-proof EMI financing options while preserving complete contract snapshot history for administrative auditing.
 
 ### Key Financial Principles
 1. **Zero-Trust Client Submissions**: Clients submit **ONLY** `variantId`, `emiPlanId`, and applicant contact details. The backend strictly ignores any client-supplied prices, rates, or monthly amounts.

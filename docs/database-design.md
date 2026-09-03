@@ -1,7 +1,7 @@
-# Relational Database Schema Design — FinEmi Marketplace
+# Relational Database Schema Design — EMI App
 
 ## 1. Overview & ER Diagram
-The database design for **FinEmi Marketplace** is a fully normalized (3NF) relational model in PostgreSQL, accessed via Prisma ORM. It cleanly separates product catalog metadata, purchasable physical inventory variants, financial EMI plan structures, partner financial institutions (`EMIProvider`), customer application records, admin accounts, and immutable system audit logs.
+The database design for **EMI App** is a fully normalized (3NF) relational model in PostgreSQL, accessed via Prisma ORM. It cleanly separates product catalog metadata, purchasable physical inventory variants, financial EMI plan structures, partner financial institutions (`EMIProvider`), customer application records, admin accounts, and immutable system audit logs.
 
 ```mermaid
 erDiagram

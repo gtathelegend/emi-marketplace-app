@@ -1,8 +1,8 @@
-# UX & Frontend Decisions — FinEmi Marketplace
+# UX & Frontend Decisions — EMI App
 
 ## 1. Customer Experience & Information Hierarchy
 
-The **FinEmi Marketplace** frontend provides a transparent, zero-trust financing experience for Indian retail electronics consumers.
+The **EMI App** frontend provides a transparent, zero-trust financing experience for Indian retail electronics consumers.
 
 ### Key Journey Stages:
 1. **Catalog Page (`/products`)**:

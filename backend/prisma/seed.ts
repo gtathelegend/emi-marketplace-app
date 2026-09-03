@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Starting FinEmi Marketplace expanded database seed (ultra-fast bulk)...');
+  console.log('🌱 Starting EMI App database seed (ultra-fast bulk)...');
 
   // 1. Seed Brands
   const brandData = [
@@ -1000,13 +1000,13 @@ async function main() {
     create: {
       email: 'admin@1fi.in',
       passwordHash,
-      fullName: 'FinEmi Master Admin',
+      fullName: 'EMI App Master Admin',
       role: 'SUPER_ADMIN',
       isActive: true,
     },
   });
 
-  console.log('✅ FinEmi Marketplace database seed completed successfully!');
+  console.log('✅ EMI App database seed completed successfully!');
 }
 
 main()

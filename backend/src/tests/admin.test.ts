@@ -11,7 +11,7 @@ vi.mock('../config/prisma.js', () => {
     id: 'admin_1',
     email: 'admin@1fi.in',
     passwordHash: mockPasswordHash,
-    fullName: 'FinEmi Master Admin',
+    fullName: 'EMI App Master Admin',
     role: 'SUPER_ADMIN',
     isActive: true,
     lastLoginAt: new Date('2026-09-02T22:00:00.000Z'),
@@ -108,7 +108,7 @@ vi.mock('../config/prisma.js', () => {
     entityType: 'Product',
     entityId: 'prod_1',
     createdAt: new Date(),
-    adminUser: { fullName: 'FinEmi Master Admin', email: 'admin@1fi.in', role: 'SUPER_ADMIN' },
+    adminUser: { fullName: 'EMI App Master Admin', email: 'admin@1fi.in', role: 'SUPER_ADMIN' },
   };
 
   const mockPrisma = {
