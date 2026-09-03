@@ -71,26 +71,26 @@ export const CatalogPage: React.FC = () => {
   };
 
   return (
-    <div className="py-6 sm:py-10 bg-gbg min-h-screen">
+    <div className="py-6 sm:py-8 bg-gbg min-h-screen">
       <Container size="lg">
-        {/* Banner / Value Prop */}
-        <div className="mb-8 p-6 sm:p-8 rounded-3xl bg-white border border-gborder shadow-card relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div className="max-w-2xl space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gblue-50 border border-gblue-200 text-gblue-700 text-xs font-bold uppercase tracking-wider">
+        {/* Banner */}
+        <div className="mb-6 p-6 sm:p-7 rounded-2xl bg-white border border-gborder shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="max-w-2xl space-y-1.5">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-gblue-50 text-gblue-700 text-xs font-semibold">
               <ShieldCheck className="w-3.5 h-3.5" />
-              EMI Marketplace
+              FinEmi Marketplace
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gdark">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-gdark">
               Shop Products with Flexible EMI Options
             </h1>
-            <p className="text-sm text-ggray">
-              Browse top smartphones, laptops, and audio gear with zero-cost EMI plans and instant bank cashback.
+            <p className="text-xs sm:text-sm text-ggray">
+              Browse smartphones, laptops, and electronics with zero-cost EMI plans and instant bank cashback.
             </p>
           </div>
         </div>
 
         {/* Search and Filters Control Bar */}
-        <div className="mb-8 flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center bg-white p-4 rounded-2xl border border-gborder shadow-card">
+        <div className="mb-6 flex flex-col md:flex-row gap-3 justify-between items-stretch md:items-center bg-white p-3.5 rounded-2xl border border-gborder shadow-xs">
           {/* Search Form */}
           <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-lg">
             <input
@@ -98,24 +98,24 @@ export const CatalogPage: React.FC = () => {
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Search products (e.g. iPhone, S24, MacBook)..."
-              className="w-full bg-slate-100/90 text-sm text-gdark pl-10 pr-22 py-2.5 rounded-xl border border-gborder focus:outline-none focus:ring-2 focus:ring-gblue-500 focus:bg-white transition-all placeholder:text-slate-400"
+              className="w-full bg-[#F1F3F4] text-sm text-gdark pl-9 pr-20 py-2 rounded-xl border border-transparent focus:border-gborder focus:bg-white focus:outline-none focus:ring-2 focus:ring-gblue-500/20 transition-all placeholder:text-slate-400"
             />
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
             <button
               type="submit"
-              className="absolute right-1.5 top-1.5 px-3.5 py-1.5 bg-gblue-600 hover:bg-gblue-700 active:bg-gblue-800 text-white text-xs font-semibold rounded-lg transition-colors"
+              className="absolute right-1 top-1 px-3 py-1 bg-gblue-600 hover:bg-gblue-700 active:bg-gblue-800 text-white text-xs font-semibold rounded-lg transition-colors"
             >
               Search
             </button>
           </form>
 
           {/* Filters & Sorting */}
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2.5">
             {/* Brand Filter */}
             <select
               value={brandParam}
               onChange={(e) => handleFilterChange('brand', e.target.value)}
-              className="text-xs sm:text-sm bg-slate-100/90 border border-gborder text-gdark font-semibold px-3.5 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-gblue-500"
+              className="text-xs sm:text-sm bg-white border border-gborder text-gdark font-medium px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-gblue-500/20 focus:border-gblue-600"
             >
               <option value="">All Brands</option>
               <option value="apple">Apple</option>
@@ -127,7 +127,7 @@ export const CatalogPage: React.FC = () => {
             <select
               value={categoryParam}
               onChange={(e) => handleFilterChange('category', e.target.value)}
-              className="text-xs sm:text-sm bg-slate-100/90 border border-gborder text-gdark font-semibold px-3.5 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-gblue-500"
+              className="text-xs sm:text-sm bg-white border border-gborder text-gdark font-medium px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-gblue-500/20 focus:border-gblue-600"
             >
               <option value="">All Categories</option>
               <option value="smartphones">Smartphones</option>
@@ -139,7 +139,7 @@ export const CatalogPage: React.FC = () => {
             <select
               value={sortParam}
               onChange={(e) => handleFilterChange('sort', e.target.value)}
-              className="text-xs sm:text-sm bg-slate-100/90 border border-gborder text-gdark font-semibold px-3.5 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-gblue-500"
+              className="text-xs sm:text-sm bg-white border border-gborder text-gdark font-medium px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-gblue-500/20 focus:border-gblue-600"
             >
               <option value="newest">Sort by: Newest</option>
               <option value="price_asc">Price: Low to High</option>

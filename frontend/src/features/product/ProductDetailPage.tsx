@@ -7,8 +7,6 @@ import { ProductImage } from '../../shared/components/commerce/ProductImage';
 import { EmiPlanCard } from '../../shared/components/commerce/EmiPlanCard';
 import { SegmentedSelector } from '../../shared/components/ui/SegmentedSelector';
 import { Button } from '../../shared/components/ui/Button';
-import { Badge } from '../../shared/components/ui/Badge';
-import { Card } from '../../shared/components/ui/Card';
 import { Skeleton } from '../../shared/components/ui/Skeleton';
 import { ErrorState } from '../../shared/components/ui/ErrorState';
 import { ApplicationModal } from './ApplicationModal';
@@ -163,85 +161,133 @@ export const ProductDetailPage: React.FC = () => {
     <div className="py-6 sm:py-10 bg-gbg min-h-screen">
       <Container size="lg">
         {/* Breadcrumb Navigation */}
-        <nav className="flex items-center gap-2 text-xs sm:text-sm text-ggray mb-6">
-          <Link to="/products" className="hover:text-gblue-600 font-medium transition-colors">
-            Catalog
+        <nav className="flex items-center gap-2 text-xs text-ggray mb-6">
+          <Link to="/products" className="hover:text-gblue-600 transition-colors">
+            Products
           </Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <span className="font-semibold text-slate-700">{product.category.name}</span>
+          <span className="font-medium text-slate-700">{product.category.name}</span>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <span className="font-bold text-gdark line-clamp-1">{product.title}</span>
+          <span className="font-medium text-gdark line-clamp-1">{product.title}</span>
         </nav>
 
-        {/* Product Overview: Gallery (Left) & Details / Variant Selectors (Right) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start mb-10">
-          {/* Left Column: Product Image Gallery */}
-          <div className="lg:col-span-6 space-y-4">
-            <Card variant="default" padding="md" className="bg-white rounded-2xl border-gborder shadow-card">
+        {/* Two Column Layout: Left = Gallery + Specs + Trust, Right = Details + Variants + EMI */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          {/* Left Column (lg:col-span-5) */}
+          <div className="lg:col-span-5 space-y-6">
+            {/* Main Product Image */}
+            <div className="bg-white border border-gborder rounded-2xl p-6 sm:p-8 flex items-center justify-center">
               <ProductImage
                 src={currentImage}
                 alt={product.title}
                 aspectRatio="square"
-                className="w-full h-80 sm:h-96 object-contain"
+                className="w-full h-72 sm:h-84 object-contain"
               />
-            </Card>
+            </div>
 
             {/* Gallery Thumbnails */}
             {selectedVariant.images.length > 1 && (
-              <div className="flex gap-3 overflow-x-auto pb-1">
+              <div className="flex gap-2.5 overflow-x-auto pb-1">
                 {selectedVariant.images.map((img) => (
                   <button
                     key={img.id}
                     onClick={() => setSelectedImageUrl(img.url)}
-                    className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all shrink-0 bg-white ${
+                    className={`relative w-16 h-16 rounded-xl overflow-hidden border transition-all shrink-0 bg-white ${
                       currentImage === img.url
                         ? 'border-gblue-600 ring-2 ring-gblue-500/20'
                         : 'border-gborder hover:border-slate-400'
                     }`}
                   >
-                    <img src={img.url} alt={img.altText} className="w-full h-full object-contain p-1.5" />
+                    <img src={img.url} alt={img.altText} className="w-full h-full object-contain p-1" />
                   </button>
                 ))}
               </div>
             )}
+
+            {/* Technical Specifications */}
+            {selectedVariant.specifications.length > 0 && (
+              <div className="bg-white border border-gborder rounded-2xl p-5 space-y-3">
+                <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
+                  <Sliders className="w-4 h-4 text-gblue-600" />
+                  <h3 className="text-sm font-bold text-gdark">Technical Specifications</h3>
+                </div>
+                <div className="divide-y divide-slate-100 text-xs">
+                  {selectedVariant.specifications.map((spec) => (
+                    <div key={spec.id} className="py-2 flex justify-between items-center">
+                      <span className="text-ggray font-medium">{spec.key}</span>
+                      <span className="font-semibold text-gdark text-right">{spec.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Trust Benefits */}
+            <div className="bg-white border border-gborder rounded-2xl p-5 space-y-3">
+              <h3 className="text-sm font-bold text-gdark flex items-center gap-2 pb-2 border-b border-slate-100">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span>Why buy on FinEmi?</span>
+              </h3>
+              <div className="space-y-2.5 text-xs text-gdark">
+                <div className="flex items-center gap-2">
+                  <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Direct bank offers with transparent rates</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Fast, paperless digital application</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Real-time tracking with reference code</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Lock className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>No hidden fees or unexpected charges</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Right Column: Product Detail & Variant Selection */}
-          <div className="lg:col-span-6 space-y-6">
-            {/* Header info */}
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Badge variant="info">{product.brand.name}</Badge>
-                <Badge variant="neutral">{product.category.name}</Badge>
+          {/* Right Column (lg:col-span-7) */}
+          <div className="lg:col-span-7 space-y-6">
+            {/* Product Header & Pricing */}
+            <div className="space-y-3 pb-6 border-b border-slate-200">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-semibold text-gblue-600 uppercase tracking-wide">
+                  {product.brand.name}
+                </span>
+                <span className="text-slate-300">·</span>
+                <span className="text-xs text-ggray">{product.category.name}</span>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gdark">
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gdark">
                 {product.title}
               </h1>
 
               {product.subtitle && (
-                <p className="mt-1.5 text-sm text-ggray">{product.subtitle}</p>
+                <p className="text-sm text-ggray">{product.subtitle}</p>
               )}
 
               {/* Rating */}
-              <div className="flex items-center gap-2 mt-3">
-                <div className="flex items-center gap-1 bg-amber-50 border border-amber-200/80 px-2.5 py-0.5 rounded-lg text-amber-800 text-xs font-bold">
-                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+              <div className="flex items-center gap-2 pt-1">
+                <div className="flex items-center gap-1 bg-amber-50 border border-amber-200/60 px-2 py-0.5 rounded text-amber-800 text-xs font-semibold">
+                  <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
                   <span>{product.rating}</span>
                 </div>
-                <span className="text-xs text-ggray">({product.reviewCount} verified ratings)</span>
+                <span className="text-xs text-ggray">({product.reviewCount} reviews)</span>
+              </div>
+
+              {/* Price Display */}
+              <div className="pt-2">
+                <PriceDisplay price={selectedVariant.price} mrp={selectedVariant.mrp} size="lg" showSavings />
               </div>
             </div>
 
-            {/* Pricing Card */}
-            <Card variant="bordered" padding="sm" className="bg-slate-100/70 border-gborder rounded-2xl">
-              <PriceDisplay price={selectedVariant.price} mrp={selectedVariant.mrp} size="lg" showSavings />
-            </Card>
-
-            {/* Variant Selection (Color & Storage) */}
-            <div className="space-y-4 pt-1">
+            {/* Variant Selectors (Color & Storage) */}
+            <div className="space-y-4 pb-6 border-b border-slate-200">
               <SegmentedSelector
-                label="Select Color"
+                label="Color"
                 options={colorOptions}
                 value={selectedVariant.colorName}
                 onChange={handleColorChange}
@@ -250,7 +296,7 @@ export const ProductDetailPage: React.FC = () => {
 
               {storageOptions.length > 1 && (
                 <SegmentedSelector
-                  label="Select Storage"
+                  label="Storage Capacity"
                   options={storageOptions}
                   value={selectedVariant.storage}
                   onChange={handleStorageChange}
@@ -258,104 +304,25 @@ export const ProductDetailPage: React.FC = () => {
                 />
               )}
             </div>
-          </div>
-        </div>
 
-        {/* Lower Content Grid: Specifications & Trust Card (Left) vs EMI Plans & Breakdown (Right) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-          {/* Left Column: Specifications & Trust Card */}
-          <div className="lg:col-span-5 space-y-6">
-            {/* Technical Specifications Card */}
-            {selectedVariant.specifications.length > 0 && (
-              <Card variant="default" className="bg-white border-gborder rounded-2xl">
-                <div className="flex items-center gap-2 mb-4 border-b border-slate-100 pb-3">
-                  <Sliders className="w-4 h-4 text-gblue-600" />
-                  <h3 className="text-base font-bold text-gdark">Technical Specifications</h3>
-                </div>
-                <div className="divide-y divide-slate-100">
-                  {selectedVariant.specifications.map((spec) => (
-                    <div key={spec.id} className="py-3 flex justify-between items-center text-xs sm:text-sm">
-                      <div className="flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-gblue-500 shrink-0" />
-                        <span className="font-semibold text-gdark">{spec.key}</span>
-                      </div>
-                      <span className="font-medium text-ggray text-right">{spec.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </Card>
-            )}
-
-            {/* "Why buy on FinEmi?" Trust Module */}
-            <Card variant="default" className="bg-white border-gborder rounded-2xl">
-              <h3 className="text-base font-bold text-gdark mb-3 flex items-center gap-2 border-b border-slate-100 pb-3">
-                <ShieldCheck className="w-5 h-5 text-emerald-600" />
-                <span>Why buy on FinEmi?</span>
-              </h3>
-              <div className="space-y-3.5 text-xs sm:text-sm text-gdark">
-                <div className="flex items-start gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
-                    <Check className="w-3.5 h-3.5 stroke-[3]" />
-                  </div>
-                  <div>
-                    <span className="font-bold block text-gdark">Direct Bank Offers</span>
-                    <span className="text-xs text-ggray">Clear terms from verified lending partners</span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
-                    <Zap className="w-3.5 h-3.5 stroke-[2.5]" />
-                  </div>
-                  <div>
-                    <span className="font-bold block text-gdark">Fast Digital Applications</span>
-                    <span className="text-xs text-ggray">Instant approval with digital submission</span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
-                    <Clock className="w-3.5 h-3.5 stroke-[2.5]" />
-                  </div>
-                  <div>
-                    <span className="font-bold block text-gdark">Real-Time Application Tracking</span>
-                    <span className="text-xs text-ggray">Live status updates with reference ID</span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
-                    <Lock className="w-3.5 h-3.5 stroke-[2.5]" />
-                  </div>
-                  <div>
-                    <span className="font-bold block text-gdark">Transparent Charges</span>
-                    <span className="text-xs text-ggray">Zero hidden fees or unexpected costs</span>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </div>
-
-          {/* Right Column: EMI Section (Cards Grid & Financing Summary) */}
-          <div className="lg:col-span-7 space-y-6">
-            {/* EMI Financing Plans Section */}
+            {/* EMI Financing Section */}
             <div className="space-y-4">
-              <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-lg font-bold text-gdark">Choose an EMI Plan</h3>
-                  <p className="text-xs text-ggray">Select a plan to view complete breakdown</p>
+                  <h3 className="text-base font-bold text-gdark">Choose an EMI Plan</h3>
+                  <p className="text-xs text-ggray">Select a monthly plan that fits your budget</p>
                 </div>
-                <Badge variant="success" size="sm">
-                  Verified Rates
-                </Badge>
+                <span className="text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                  Zero Cost Available
+                </span>
               </div>
 
               {selectedVariant.emiPlans.length === 0 ? (
-                <Card variant="bordered" className="text-center py-8">
-                  <p className="text-sm text-ggray">No active EMI plans available for this variant.</p>
-                </Card>
+                <div className="text-center py-6 bg-white border border-gborder rounded-2xl">
+                  <p className="text-xs text-ggray">No active EMI plans for this variant.</p>
+                </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                   {selectedVariant.emiPlans.map((plan) => (
                     <EmiPlanCard
                       key={plan.id}
@@ -376,71 +343,69 @@ export const ProductDetailPage: React.FC = () => {
               )}
             </div>
 
-            {/* Selected EMI Summary & Primary CTA Card */}
+            {/* Selected EMI Plan Breakdown & Proceed CTA */}
             {selectedEmiPlan && (
-              <Card variant="elevated" className="bg-white border-2 border-gblue-600 rounded-2xl shadow-material-selected">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
-                  <h4 className="text-base font-bold text-gdark">Selected EMI Plan</h4>
-                  <Badge variant="info">
-                    {selectedEmiPlan.provider.name} • {selectedEmiPlan.tenureMonths} Months
-                  </Badge>
+              <div className="bg-white border-2 border-gblue-600/80 rounded-2xl p-5 shadow-xs space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                  <h4 className="text-sm font-bold text-gdark">Selected Financing Plan</h4>
+                  <span className="text-xs font-medium text-gblue-700 bg-gblue-50 px-2 py-0.5 rounded-md">
+                    {selectedEmiPlan.provider.name} · {selectedEmiPlan.tenureMonths} Months
+                  </span>
                 </div>
 
-                <div className="space-y-2 text-xs sm:text-sm border-b border-slate-100 pb-4 mb-4">
+                <div className="space-y-2 text-xs">
                   <div className="flex justify-between text-ggray">
-                    <span>Product Variant Price</span>
-                    <span className="font-semibold text-gdark">{formatINR(selectedVariant.price)}</span>
+                    <span>Product Price</span>
+                    <span className="font-medium text-gdark">{formatINR(selectedVariant.price)}</span>
                   </div>
 
                   {selectedEmiPlan.cashbackAmount > 0 && (
-                    <div className="flex justify-between text-emerald-700 font-semibold">
+                    <div className="flex justify-between text-emerald-700 font-medium">
                       <span>Instant Bank Cashback</span>
                       <span>- {formatINR(selectedEmiPlan.cashbackAmount)}</span>
                     </div>
                   )}
 
                   <div className="flex justify-between text-gdark font-semibold pt-1 border-t border-slate-100">
-                    <span>Net Principal Financed</span>
-                    <span className="font-bold text-gdark">
-                      {formatINR(Math.max(0, selectedVariant.price - selectedEmiPlan.cashbackAmount))}
-                    </span>
+                    <span>Net Financed Amount</span>
+                    <span>{formatINR(Math.max(0, selectedVariant.price - selectedEmiPlan.cashbackAmount))}</span>
                   </div>
 
                   {selectedEmiPlan.processingFee > 0 && (
-                    <div className="flex justify-between text-slate-500 text-xs">
-                      <span>One-Time Processing Fee</span>
+                    <div className="flex justify-between text-ggray text-[11px]">
+                      <span>Processing Fee</span>
                       <span>+ {formatINR(selectedEmiPlan.processingFee)}</span>
                     </div>
                   )}
                 </div>
 
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-slate-100">
                   <div>
-                    <span className="text-xs font-medium text-ggray block">Monthly Installment</span>
+                    <span className="text-xs text-ggray block">Monthly Installment</span>
                     <div className="flex items-baseline gap-1">
-                      <span className="text-2xl sm:text-3xl font-black text-gblue-600">
+                      <span className="text-2xl font-bold text-gblue-600">
                         {formatINR(Math.round((selectedVariant.price - selectedEmiPlan.cashbackAmount) / selectedEmiPlan.tenureMonths))}
                       </span>
-                      <span className="text-xs font-semibold text-ggray">/ month</span>
+                      <span className="text-xs text-ggray font-normal">/ month</span>
                     </div>
-                    <span className="text-xs text-ggray">for {selectedEmiPlan.tenureMonths} months ({selectedEmiPlan.interestRate === 0 ? '0%' : `${selectedEmiPlan.interestRate}%`} p.a.)</span>
+                    <span className="text-[11px] text-ggray">for {selectedEmiPlan.tenureMonths} months ({selectedEmiPlan.interestRate === 0 ? '0% interest' : `${selectedEmiPlan.interestRate}% p.a.`})</span>
                   </div>
 
                   <Button
                     variant="primary"
                     size="lg"
-                    rightIcon={<ArrowRight className="w-5 h-5" />}
+                    rightIcon={<ArrowRight className="w-4 h-4" />}
                     onClick={() => setIsModalOpen(true)}
                     className="w-full sm:w-auto"
                   >
                     Proceed with EMI
                   </Button>
                 </div>
-              </Card>
+              </div>
             )}
 
             {/* Bottom Security Assurance Banner */}
-            <div className="flex items-center justify-around p-3.5 bg-white rounded-xl border border-gborder text-xs text-ggray font-medium">
+            <div className="flex items-center justify-around p-3 bg-white rounded-xl border border-gborder text-xs text-ggray font-medium">
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span>Instant Digital Approval</span>

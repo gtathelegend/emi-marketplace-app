@@ -89,35 +89,35 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
       description="Complete your details to submit your financing application"
       size="md"
     >
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-5">
         {/* Selected Plan Commercial Summary */}
-        <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
-          <div className="flex items-center justify-between border-b border-slate-200/80 pb-2">
+        <div className="p-4 rounded-xl bg-[#F8F9FA] border border-gborder space-y-2.5">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-200">
             <div>
-              <h4 className="text-sm font-bold text-slate-900">{productTitle}</h4>
-              <p className="text-xs text-slate-500">{variant.title}</p>
+              <h4 className="text-sm font-semibold text-gdark">{productTitle}</h4>
+              <p className="text-xs text-ggray">{variant.title}</p>
             </div>
-            <span className="text-sm font-extrabold text-slate-900">{formatINR(variant.price)}</span>
+            <span className="text-sm font-bold text-gdark">{formatINR(variant.price)}</span>
           </div>
 
           <div className="grid grid-cols-2 gap-2 text-xs">
             <div>
-              <span className="text-slate-500">Bank Partner:</span>
-              <p className="font-semibold text-slate-800">{emiPlan.provider.name}</p>
+              <span className="text-ggray">Bank Partner</span>
+              <p className="font-medium text-gdark">{emiPlan.provider.name}</p>
             </div>
             <div>
-              <span className="text-slate-500">Tenure:</span>
-              <p className="font-semibold text-slate-800">{emiPlan.tenureMonths} Months</p>
+              <span className="text-ggray">Tenure</span>
+              <p className="font-medium text-gdark">{emiPlan.tenureMonths} Months</p>
             </div>
             <div>
-              <span className="text-slate-500">Monthly EMI:</span>
-              <p className="font-bold text-emerald-600">
+              <span className="text-ggray">Monthly EMI</span>
+              <p className="font-bold text-gblue-600">
                 {formatINR(Math.round(variant.price / emiPlan.tenureMonths))}/mo
               </p>
             </div>
             <div>
-              <span className="text-slate-500">Interest Rate:</span>
-              <p className="font-semibold text-slate-800">
+              <span className="text-ggray">Interest Rate</span>
+              <p className="font-medium text-gdark">
                 {emiPlan.isZeroCost || emiPlan.interestRate === 0 ? '0% (Zero Cost)' : `${emiPlan.interestRate}% p.a.`}
               </p>
             </div>
@@ -125,13 +125,13 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
         </div>
 
         {/* Security Notice */}
-        <div className="flex items-center gap-2 text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/80 p-3 rounded-xl">
+        <div className="flex items-center gap-2 text-xs font-medium text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-2 rounded-xl">
           <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-          <span>Demo Customer Info Only — No real PAN, Aadhaar, or card details collected</span>
+          <span>Demo info only — no real PAN or payment credentials required</span>
         </div>
 
         {/* Form Inputs */}
-        <div className="space-y-4">
+        <div className="space-y-3.5">
           <Input
             label="Full Name"
             placeholder="e.g. Rahul Verma"
@@ -169,7 +169,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
         )}
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-3 pt-2">
+        <div className="flex items-center justify-end gap-2.5 pt-2">
           <Button variant="ghost" type="button" onClick={onClose} disabled={createMutation.isPending}>
             Cancel
           </Button>
