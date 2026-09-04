@@ -38,9 +38,8 @@
 
 ---
 
-## 5. Rate Limiting, CORS & Security Headers
+## 5. CORS & Security Headers
 
-- **Rate Limiting**: Configured via Express rate-limiter middleware (`100 requests per 15 minutes` per IP). Suitable for single-instance demo deployments; distributed deployments would use a Redis shared store.
 - **CORS Configuration**: Environment-driven via `CORS_ORIGIN`. Restricts allowed origin and methods while allowing credentials for HTTP-only auth cookies.
 - **Security Headers**: Production headers managed via Helmet (`X-Content-Type-Options`, `X-Frame-Options`, `Strict-Transport-Security`).
 

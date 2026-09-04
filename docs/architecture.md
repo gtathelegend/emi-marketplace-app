@@ -37,11 +37,11 @@ Key Architectural Principles:
                             │
                      Middleware Layer
                             │
-              ┌─────────────┼─────────────┐
-              │             │             │
-          Validation       Auth        Rate Limit
-              │             │             │
-              └─────────────┼─────────────┘
+               ┌─────────────┴─────────────┐
+               │                           │
+           Validation                     Auth
+               │                           │
+               └─────────────┬─────────────┘
                             │
                        Controllers
                             │
@@ -83,7 +83,7 @@ Category ├── Product
 | Layer | Responsibility | What it MUST NOT do |
 |---|---|---|
 | **Routes** | Define paths (`/api/v1/...`), attach middleware chain, attach controllers. | Perform inline validation or call services directly. |
-| **Middleware** | Intercept requests for CORS, Helmet security headers, JWT validation, Zod payload validation, rate limiting, and error formatting. | Execute business rules or commit database transactions. |
+| **Middleware** | Intercept requests for CORS, Helmet security headers, JWT validation, Zod payload validation, and error formatting. | Execute business rules or commit database transactions. |
 | **Controllers** | Parse HTTP inputs (`req.params`, `req.query`, `req.body`), delegate to Services, format HTTP responses (`200 OK`, `201 Created`). | Execute SQL/Prisma queries, perform EMI math, or return raw stack traces. |
 | **Services** | Implement domain logic (e.g., verifying variant existence, checking EMI plan validity, calculating monthly payments, executing transactional checkouts, logging admin audits). | Read `req` or write `res` objects. |
 | **Repositories** | Expose typed data manipulation interfaces using Prisma ORM. Handle table joins, filtering, pagination, and raw transaction handles. | Perform business rule validations or issue HTTP responses. |

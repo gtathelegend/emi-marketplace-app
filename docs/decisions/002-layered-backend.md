@@ -8,7 +8,7 @@ We enforce a strict **Layered Architecture**:
 `Routes -> Middleware -> Controllers -> Services -> Repositories -> Prisma ORM -> PostgreSQL`.
 
 - **Routes**: Define HTTP paths and attach middlewares & controllers.
-- **Middleware**: Intercept requests for auth, role authorization, validation, rate limiting, and error formatting.
+- **Middleware**: Intercept requests for auth, role authorization, validation, and error formatting.
 - **Controllers**: Handle HTTP input extraction (`req.params`, `req.body`) and send formatted HTTP responses. Zero business logic or database queries allowed.
 - **Services**: Execute domain business logic, financial EMI calculations, and transactional orchestrations. Zero Express `req`/`res` references allowed.
 - **Repositories**: Encapsulate all Prisma ORM operations and database queries.

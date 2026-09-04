@@ -27,4 +27,15 @@ describe('GET /api/v1/health', () => {
     expect(response.body).toHaveProperty('error');
     expect(response.body.error).toHaveProperty('code', 'ROUTE_NOT_FOUND');
   });
+
+  it('should allow repeated health checks (>100 requests) without rate limit failure', async () => {
+    const requests = Array.from({ length: 110 }, () => request(app).get('/api/v1/health'));
+    const responses = await Promise.all(requests);
+
+    for (const res of responses) {
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+      expect(res.body.data.status).toBe('healthy');
+    }
+  });
 });

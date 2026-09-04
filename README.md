@@ -89,7 +89,6 @@ All API endpoints are versioned under `/api/v1`.
 - **JWT** (jsonwebtoken) + **bcryptjs** (authentication)
 - **Helmet** (security headers)
 - **CORS** (configurable origin allowlist)
-- **express-rate-limit** (rate limiting)
 - **Winston** (structured logging)
 - **cookie-parser** (admin session cookies)
 
@@ -127,7 +126,7 @@ Routes → Middleware → Controllers → Services → Repositories → Prisma �
 | Layer | Responsibility |
 |---|---|
 | **Routes** | HTTP method + path mapping, Zod schema binding |
-| **Middleware** | Auth (JWT), request validation, rate limiting, logging, error handling |
+| **Middleware** | Auth (JWT), request validation, logging, error handling |
 | **Controllers** | Extract validated request data, delegate to services, send responses |
 | **Services** | Domain business logic, EMI calculations, application snapshot creation |
 | **Repositories** | Prisma query abstractions, data access patterns |
@@ -627,7 +626,6 @@ cd frontend && npm run build
 | Password hashing | bcryptjs with salt rounds |
 | Security headers | Helmet middleware |
 | CORS | Configurable origin allowlist |
-| Rate limiting | express-rate-limit on all routes |
 | Error handling | Centralized error middleware with typed `AppError` hierarchy |
 | Server-side financial calculation | `EMICalculator` uses `Prisma.Decimal` — frontend never sends monetary values |
 | Immutable application snapshots | `EMIApplication` preserves exact financial terms at submission time |
@@ -667,7 +665,7 @@ emi-marketplace-app/
 │   │   ├── controllers/            # Request/response handlers
 │   │   ├── errors/                 # Typed AppError hierarchy
 │   │   ├── middleware/             # Admin JWT auth middleware
-│   │   ├── middlewares/            # Validation, rate limiter, error handler, request logger
+│   │   ├── middlewares/            # Validation, error handler, request logger
 │   │   ├── repositories/          # Prisma data-access abstractions
 │   │   ├── routes/                # Express API v1 route definitions
 │   │   ├── schemas/               # Zod request validation schemas

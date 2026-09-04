@@ -171,5 +171,15 @@ describe('Product Catalog REST API (/api/v1/products)', () => {
       expect(response.body.success).toBe(false);
       expect(response.body.error).toHaveProperty('code', 'VALIDATION_ERROR');
     });
+
+    it('should allow repeated product catalog requests (>100 requests) without rate limit failure', async () => {
+      const requests = Array.from({ length: 110 }, () => request(app).get('/api/v1/products'));
+      const responses = await Promise.all(requests);
+
+      for (const res of responses) {
+        expect(res.status).toBe(200);
+        expect(res.body.success).toBe(true);
+      }
+    });
   });
 });
